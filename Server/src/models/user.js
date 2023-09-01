@@ -35,6 +35,10 @@ const user_Schema = new Schema({
     required: true,
     enum: ["admin", "seller", "client"],
   },
+  sale: [{
+    type: Schema.Types.ObjectId,
+    ref: 'sale'
+  }]
 });
 
 user_Schema.methods.toJSON = function idSetter() {

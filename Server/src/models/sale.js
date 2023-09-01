@@ -21,7 +21,7 @@ const sale_Schema = new Schema({
   ],
   saleDate: {
     type: String,
-    required: true,
+
   },
   status: {
     type: Boolean,

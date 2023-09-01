@@ -11,14 +11,14 @@ const profiles_Schema = new Schema({
   },
   pin: {
     type: Number,
-    min: 1,
-    max: 4,
+    min:1000,
+    max:9999,
     required: true,
   },
   number: {
     type: Number,
-    min: 1,
-    max: 5,
+    min: 1000,
+    max: 9999,
     required: true,
   },
   product: [{

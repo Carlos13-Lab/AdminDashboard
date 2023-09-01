@@ -3,12 +3,13 @@ const { encryptPassword } = require("../helpers/crypto");
 
 const findById = async (id) => {
   const user = await User.findById(id, 
-    ["userName", "email", "phone_Number", "role", "active"]).populate([
-      {
-        path: 'product', select: 'email', populate: {
-          path: 'service', select: 'name'
-        }
-      }])
+    ["userName", "email", "phone_Number", "role", "active"]).populate({path: 'product', select: 'email'})
+  return user;
+};
+
+const findByIdSeller = async (id) => {
+  const user = await User.findById(id,
+    ["userName", "email", "phone_Number", "role", "active"]).populate({path: 'sale', select: 'saleDate'})
   return user;
 };
 
@@ -16,8 +17,8 @@ const findByEmail = async (email) => {
   const user = await User.findOne({ email }, 
     ["userName", "email", "phone_Number", "role", "active"])
     .populate({
-    path: "product",
-    select: "email",
+    path: "service",
+    select: "name",
   })
 
   return user;
@@ -37,7 +38,13 @@ const newUser = async (body) => {
 
   await user.save();
 
-  const savedUser = await findById(user._id);
+  let savedUser;
+
+  if(user.role == 'seller'){
+    savedUser = await findByIdSeller(user._id)
+  }else{
+    savedUser = await  findById(user._id)
+  }
 
   return savedUser;
 };
@@ -57,7 +64,5 @@ const UpdateUser = async ({id, body}) => {
   )
   const data = await findById(userUpdate.id)
   return data;
-
 }
-
 module.exports = { newUser, findByEmail, UpdateUser, findById };

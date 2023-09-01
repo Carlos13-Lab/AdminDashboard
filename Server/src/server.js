@@ -5,7 +5,8 @@ const {
     service,
     product,
     profile,
-    user
+    user,
+    sale
 } = require('./routes/routes');
 
 const express = require("express");
@@ -30,6 +31,7 @@ server.use('/api/demo/service', service);
 server.use('/api/demo/product', product);
 server.use('/api/demo/profile', profile);
 server.use('/api/demo/user', user);
+server.use('/api/demo/sale', sale);
 
 
 
