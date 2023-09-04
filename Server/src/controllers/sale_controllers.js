@@ -1,15 +1,14 @@
 const { serverError, success, error } = require('../helpers/response.js');
 const Sale = require('../models/sale.js');
 
-const {newSale, findById} = require('../services/sale_service.js')
+const { newSale, findById, findByIdandUpdate, remove } = require('../services/sale_service.js')
 
 
 const saleNew = async (req, res) => {
     let data = {};
-    const {body} = req
+    const { body } = req
     try {
-        const savedSale = await newSale( body);
-        console.log(req.body)
+        const savedSale = await newSale(body);
         await savedSale.save()
 
         data = {
@@ -29,7 +28,7 @@ const saleNew = async (req, res) => {
         data,
         status: 200,
     });
-    
+
 }
 
 const saleGet = async (req, res) => {
@@ -81,13 +80,66 @@ const saleGetById = async (req, res) => {
     }
 };
 
+const updateSale = async (req, res) => {
+    const { id } = req.params;
 
+    const { body } = req;
+
+    let data = {};
+
+    try {
+        data = await findByIdandUpdate({ id, body });
+    } catch (err) {
+        return serverError({
+            res,
+            message: err.message,
+            status: 500
+        });
+    }
+
+    if (Object.keys(data).length > 0) {
+        return success({
+            res,
+            message: 'Sale updated',
+            data,
+            status: 201,
+        });
+    }
+
+    return error({
+        res,
+        message: 'Sale not found',
+        status: 404
+    });
+};
+
+const SaleRemove = async (req, res) => {
+
+    const { id } = req.params;
+
+
+    try {
+        const removeSale = await remove(id);
+        if (!removeSale)
+            return error({req, res, message:'There is a problem with the post that you want to remove!!', status:400});
+        if (removeSale === "no-sale") return error({req, res, message:'There is a problem with the post that you want to remove!!', status:400});
+        return success({req, res, message:'Sale deleted', data:removeSale, status:200});
+    } catch (error) {
+        if (error.message === 'no-privileges') {
+            return error({req, res, message:'Unauthorized User', status:401});
+        }
+
+        return error({req, res, message:'Sale not found',status:500});
+    }
+};
 
 
 
 
 module.exports = {
-saleNew,
-saleGet,
-saleGetById
+    saleNew,
+    saleGet,
+    saleGetById,
+    updateSale,
+    SaleRemove
 };

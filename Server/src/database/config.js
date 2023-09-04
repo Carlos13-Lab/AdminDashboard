@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 require('dotenv').config;
-const uri = process.env.URLDB || 'mongodb://admin:admin@127.0.0.1:27017/thedbname?authSource=adminDashbord'
+const uri = process.env.URLDB
 
 mongoose.set('strictQuery', false);  
 

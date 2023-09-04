@@ -17,8 +17,8 @@ const profiles_Schema = new Schema({
   },
   number: {
     type: Number,
-    min: 1000,
-    max: 9999,
+    min: 0,
+    max: 5,
     required: true,
   },
   product: [{

@@ -25,7 +25,9 @@ server.use(
     allowedHeaders: "*",
   })
 );
-
+server.get("/", (req, res) => {
+  res.status(200).json({ message: "Connect" })
+})
 server.use('/api/demo/auth', auth);
 server.use('/api/demo/service', service);
 server.use('/api/demo/product', product);
