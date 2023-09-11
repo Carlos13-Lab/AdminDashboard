@@ -2,15 +2,24 @@ import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import { userColumns, userRows } from "../../datatablesource";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getUsers } from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 const Datatable = () => {
-  const [data, setData] = useState(userRows);
+  const users = useSelector((state) => state.users);
+  console.log('users',users)
+  const [data, setData] = useState(users);
+ 
+  const dispatch = useDispatch()
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
-
+      useEffect(() => {
+        dispatch(getUsers()).catch((error) => console.log(error));
+        console.log(getUsers)
+    }, []);
   const actionColumn = [
     {
       field: "action",
@@ -43,7 +52,7 @@ const Datatable = () => {
       </div>
       <DataGrid
         className="datagrid"
-        rows={data}
+        rows={users}
         columns={userColumns.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}

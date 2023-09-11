@@ -1,14 +1,16 @@
 export const userColumns = [
   { field: "id", headerName: "ID", width: 70 },
   {
-    field: "user",
+    field: "userName",
     headerName: "User",
     width: 230,
     renderCell: (params) => {
+      console.log(params)
       return (
         <div className="cellWithImg">
-          <img className="cellImg" src={params.row.img} alt="avatar" />
-          {params.row.username}
+          <img className="cellImg" src='https://img.freepik.com/vector-premium/icono-perfil-personas_718801-114.jpg?w=740' alt="avatar" />
+          {params.row.userName}
+
         </div>
       );
     },
@@ -20,8 +22,8 @@ export const userColumns = [
   },
 
   {
-    field: "age",
-    headerName: "Age",
+    field: "active",
+    headerName: "Active",
     width: 100,
   },
   {
@@ -30,8 +32,8 @@ export const userColumns = [
     width: 160,
     renderCell: (params) => {
       return (
-        <div className={`cellWithStatus ${params.row.status}`}>
-          {params.row.status}
+        <div className={`cellWithStatus ${params.row.active}`}>
+          {params.row.active}
         </div>
       );
     },

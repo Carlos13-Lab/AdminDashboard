@@ -8,9 +8,28 @@ import { productInputs, userInputs } from "./formSource";
 import "./style/dark.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
+import { useDispatch, useSelector } from "react-redux";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
+  const user = useSelector((state) => state.user);
+  // const dispatch = useDispatch();
+
+  if (!user.token) {
+    return <Login />;
+  }
+
+  // if (user.user.role !== "admin") {
+  //   dispatch(getCourses(user.user.uid)).catch((error) => {
+  //     console.log(error);
+  //   });
+  // } else {
+  //   dispatch(getAllCourses()).catch((error) => {
+  //     console.log(error);
+  //   });
+  // }
+
+  window.localStorage.setItem("loggedAppUser", JSON.stringify(user));
 
   return (
     <div className={darkMode ? "app dark" : "app"}>
