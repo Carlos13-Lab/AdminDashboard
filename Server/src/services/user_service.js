@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const { encryptPassword } = require("../helpers/crypto");
+// const { encryptPassword } = require("../helpers/crypto");
 
 const findById = async (id) => {
   const user = await User.findById(id, 
@@ -17,8 +17,8 @@ const findByEmail = async (email) => {
   const user = await User.findOne({ email }, 
     ["userName", "email", "phone_Number", "role", "active"])
     .populate({
-    path: "service",
-    select: "name",
+    path: "sale",
+    select: "saleDate",
   })
 
   return user;
@@ -30,7 +30,7 @@ const newUser = async (body) => {
   const user = new User({
     userName,
     email,
-    password: encryptPassword(password),
+    password,
     role,
     phone_Number,
     active,

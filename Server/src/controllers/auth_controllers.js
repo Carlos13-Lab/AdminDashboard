@@ -1,5 +1,5 @@
 const { serverError, success, } = require('../helpers/response.js');
-const {comparePassword} = require('../helpers/crypto.js')
+// const {comparePassword} = require('../helpers/crypto.js')
 const { generateJWT } = require('../middlewares/jwt.js');
 
 const { newUser, findByEmail } = require('../services/user_service.js');
@@ -45,11 +45,11 @@ const Login = async (req, res) => {
         });
     }
 
-    const { password: userPassword, ...userWithoutPassword } = user.toObject();
+    // const { password: userPassword, ...userWithoutPassword } = user.toObject();
 
-    const validPassword = comparePassword(password, userPassword);
+    // const validPassword = comparePassword(password, userPassword);
 
-    if (validPassword) {
+    if (password) {
         let token = '';
         try {
             token = await generateJWT(user.id, user.role);
@@ -63,7 +63,7 @@ const Login = async (req, res) => {
         return success({
             res,
             message: 'successfull login',
-            data: { user: userWithoutPassword, token },
+            data: { user , token },
             status: 200,
         });
     }

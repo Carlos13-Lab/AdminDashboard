@@ -26,6 +26,10 @@ const sale_Schema = new Schema({
   status: {
     type: Boolean,
   },
+  price: {
+    type: String,
+    require: true
+  }
 });
 
 const Sale = model("sale", sale_Schema);
