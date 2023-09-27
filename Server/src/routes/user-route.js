@@ -1,17 +1,18 @@
 const Router = require('express');
 
-const { userfindUpdate, userGet, userGetById, UserNew, addIdProductClient } = require('../controllers/user_controllers');
+const {UpdateUser, userGet, userGetById, UserNew, addIdProductClient, userDelete } = require('../controllers/user_controllers');
 // const { validateJWT } = require('../middlewares/validateJWT');
 
 
 const route = Router();
 
 // route.use(validateJWT)
-route.put('/:id', userfindUpdate)
+route.put('/:id', UpdateUser)
      .get('/', userGet)
      .get('/:id', userGetById)
-     .post('/:id', UserNew)
+     .post('/', UserNew)
      .post('/add/:id', addIdProductClient)
+     .delete('/:id', userDelete)
 
 
 module.exports = route;

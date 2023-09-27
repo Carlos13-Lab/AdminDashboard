@@ -18,7 +18,7 @@ const Newproduct = async (req, res) => {
         return serverError({
             res,
             message: err.message,
-            status: 500
+            status: 500 
         });
     }
     

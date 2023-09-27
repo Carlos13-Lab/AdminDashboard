@@ -24,8 +24,7 @@ const findByEmail = async (email) => {
   return user;
 };
 
-const newUser = async (body) => {
-  const { userName, email, password, role, phone_Number, active } = body;
+const NewUser = async ({ userName, email, password, role, phone_Number, active, }) => {
 
   const user = new User({
     userName,
@@ -33,36 +32,22 @@ const newUser = async (body) => {
     password,
     role,
     phone_Number,
-    active,
+    active
   });
 
   await user.save();
 
   let savedUser;
-
-  if(user.role == 'seller'){
-    savedUser = await findByIdSeller(user._id)
-  }else{
-    savedUser = await  findById(user._id)
+  switch (user.role) {
+    case 'seller':
+      savedUser = await findByIdSeller(user._id);
+      break;
+    default:
+      savedUser = await findById(user._id);
+      break;
   }
 
   return savedUser;
 };
 
-
-const UpdateUser = async ({id, body}) => {
-  const { userName, email, password, role, phone_Number, active } = body;
-
-  const options = {
-    userName, email, password, role, phone_Number, active 
-  }
-
-  const userUpdate = await User.findByIdAndUpdate(
-    {_id: id},
-    {$set: options},
-    {new: true}
-  )
-  const data = await findById(userUpdate.id)
-  return data;
-}
-module.exports = { newUser, findByEmail, UpdateUser, findById };
+module.exports = { NewUser, findByEmail, findById, findByIdSeller };

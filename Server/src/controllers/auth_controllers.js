@@ -2,13 +2,13 @@ const { serverError, success, } = require('../helpers/response.js');
 // const {comparePassword} = require('../helpers/crypto.js')
 const { generateJWT } = require('../middlewares/jwt.js');
 
-const { newUser, findByEmail } = require('../services/user_service.js');
+const { NewUser, findByEmail } = require('../services/user_service.js');
 
 const Register = async (req, res) => {
     let data = {};
 
     try {
-        const savedUser = await newUser(req.body);
+        const savedUser = await NewUser(req.body);
 
         const token = await generateJWT(savedUser.id, savedUser.userName, savedUser.role);
 

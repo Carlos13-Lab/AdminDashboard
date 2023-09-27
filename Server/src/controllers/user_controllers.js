@@ -1,108 +1,121 @@
 const { serverError, success, error } = require("../helpers/response.js");
-const { UpdateUser, findById, newUser } = require('../services/user_service.js')
+const { findById, findByIdSeller } = require('../services/user_service.js')
+const mongoose = require('mongoose');
+const bcryptjs = require('bcryptjs')
 
 const User = require('../models/user.js');
 const Product = require('../models/products.js');
+const Sale = require('../models/sale.js')
 
 
-const userfindUpdate = async (req, res) => {
-    const { id } = req.params;
-
-    const { body } = req;
-
-    let data = {};
-
-    try {
-        data = await UpdateUser({ id, body });
-    } catch (err) {
-        return serverError({
-            res,
-            message: err.message,
-            status: 500
-        });
-    }
-
-    if (Object.keys(data).length > 0) {
-        return success({
-            res,
-            message: 'User updated',
-            data,
-            status: 201,
-        });
-    }
-
-    return error({
-        res,
-        message: 'User not found',
-        status: 404
-    });
-};
 const UserNew = async (req, res) => {
-    let data = {};
-     const {id} = req.params
     try {
-        const savedUser = await newUser(req.body);
-        const ProductUser = await Product.findById(id);
-        savedUser.product.push(ProductUser.id);
-        await savedUser.save()
-        
-        data = {
-            user: savedUser,
-        };
+        const { userName, email, password, role, phone_Number, active, product } = req.body;
+
+        const user = new User({
+            userName,
+            email,
+            password,
+            role,
+            phone_Number,
+            active,
+            product: []
+        });
+
+        if (product && user.role === 'client') {
+            const productIds = [...new Set(product)];
+
+            for (let productId of productIds) {
+                try {
+                    if (mongoose.Types.ObjectId.isValid(productId)) {
+                        const productObj = await Product.findById(productId);
+                        if (productObj) {                
+                            user.product.push(productId);
+                        }
+                    }
+                } catch (error) {
+                    console.error(`Error finding product: ${error}`);
+                }
+            }
+        }
+
+        await user.save();
+
+        return res.status(200).json({
+            message: 'User created',
+            data: { user }
+        });
     } catch (error) {
-        return serverError({
-            res,
-            message: error.message,
-            status: 500
+        console.error(`Error in userPost: ${error}`);
+        return res.status(500).json({
+            error: 'Error creating a user'
         });
     }
-
-    return success({
-        res,
-        message: "user created",
-        data,
-        status: 200,
-    });
 };
 
 const userGet = async (req, res) => {
     let data = {}
     const { limit, from } = req.query;
     try {
-        const [total, user] = await Promise.all([
-            await User.countDocuments(),
-            await User.find().skip(Number(from)).limit(Number(limit))
-            .populate([
-                {path: 'product', select: 'email',populate:{
-                path: 'service', select: 'name'
-            }}])
-            .exec(),
+        const [totalResult, userResult] = await Promise.allSettled([
+            User.countDocuments(),
+            User.find().skip(Number(from)).limit(Number(limit))
+                .populate([
+                    {
+                        path: 'product', select: 'email', populate: {
+                            path: 'service', select: 'name'
+                        }
+                    }])
+                .exec(),
         ]);
-        data = {
-            user,
-            total,
-        };
-        return success({
-            res,
-            message: "get API - list user",
-            data,
-            status: 201,
-        });
+
+        if (totalResult.status === 'fulfilled' && userResult.status === 'fulfilled') {
+            const { value: total } = totalResult;
+            const { value: user } = userResult;
+
+            data = {
+                user,
+                total,
+            };
+
+            return success({
+                res,
+                message: "get API - list user",
+                data,
+                status: 200,
+            });
+        } else {
+            const error = totalResult.reason || userResult.reason;
+            return serverError({
+                res,
+                message: `Error in userGet: ${error}`,
+                data,
+                status: 500,
+            });
+        }
     } catch (error) {
-        console.error(`Error in userGet:${error}`);
         return serverError({
             res,
-            message: "Error getting list of user",
+            message: `Error in userGet: ${error}`,
             data,
             status: 500,
         });
     }
 };
 
+
 const userGetById = async (req, res) => {
     try {
         const { id } = req.params;
-        const user = await findById(id)
+        let user = await findById(id);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        if (user.role === 'seller') {
+            user = await findByIdSeller(id);
+        }
 
         return success({
             res,
@@ -112,38 +125,117 @@ const userGetById = async (req, res) => {
         });
     } catch (error) {
         console.error(`Error in userGetById:${error}`);
-        return error(req, res, 'Error get user');
-    }
-};
-
-
-const addIdProductClient = async (req, res) => {
-    const { id } = req.params;
-    const { p_id} = req.body;
-    try {
-        const user = await User.findById(id);
-        user.product.push(p_id)
-        await user.save();
-        return success({
-            res,
-            message: "user Add success",
-            data: user,
-            status: 201
-        });
-    } catch (error) {
-        console.error(`Error in User:${error}`);
         return serverError({
             res,
-            message: "Error getting list of user",
+            message: `Error in userGet: ${error}`,
             status: 500,
         });
     }
 };
 
+
+
+const addIdProductClient = async (req, res) => {
+    const { id } = req.params;
+    const { pid } = req.body;
+
+    // Verificar si id y pid están presentes
+    if (!id || !pid) {
+        return res.status(400).json({ message: "Invalid request" });
+    }
+
+    try {
+        const user = await User.findById(id);
+
+        // Verificar si el pid ya existe en el array product del usuario
+        if (user.product.includes(pid)) {
+            return res.status(400).json({ message: "Product already exists for the user" });
+        }
+
+        user.product.push(pid);
+        await user.save();
+        return res.status(201).json({
+            message: "User Add success",
+            data: user,
+        });
+    } catch (error) {
+        console.error(`Error in User: ${error}`);
+        return res.status(500).json({ message: "Error saving user" });
+    }
+};
+
+const userDelete = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const user_past = await User.findById(id);
+        let user;
+
+        if (user_past.role === "seller" && user_past.sale) {
+            await Promise.all(
+                user_past.sale.map(async (saleId) => {
+                    const sale = await Sale.findByIdAndDelete(saleId);
+                    if (sale) {
+                        console.log(`Sale ${saleId} deleted`);
+                    }
+                })
+            );
+        }
+
+        user = await User.findByIdAndDelete(user_past._id);
+
+        return res.status(201).json({
+            message: "User Delete success",
+            data: user,
+        });
+    } catch (error) {
+        console.error(`Error in userDelete:${error}`);
+        return res.status(500).json({ message: 'Error deleting a user' });
+    }
+};
+
+const UpdateUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { password, role, product, ...rest } = req.body;
+
+        if (password) {
+            const salt = bcryptjs.genSaltSync(10);
+            rest.password = bcryptjs.hashSync(password, salt);
+        }
+
+        const userPast = await User.findById(id);
+
+        if (userPast.role === 'admin') {
+            rest.product = [];
+        } else {
+            // Verifica si el producto ya existe antes de agregarlo
+            if (product) {
+                const existingProducts = userPast.product;
+                const newProducts = product.filter(p => !existingProducts.includes(p));
+                rest.product = [...existingProducts, ...newProducts];
+            } else {
+                rest.product = userPast.product;
+            }
+        }
+
+        const user = await User.findByIdAndUpdate(id, { product: rest.product, ...rest }, { new: true });
+
+        return res.status(200).json({ message: 'User updated', user });
+    } catch (error) {
+        console.error(`Error in UpdateUser: ${error}`);
+        return res.status(500).json({ error: 'Error updating a user' });
+    }
+};
+
+
+
+
 module.exports = {
-    userfindUpdate,
+    UpdateUser,
     userGet,
-    userGetById, 
+    userGetById,
     UserNew,
-    addIdProductClient
+    addIdProductClient,
+    userDelete
 }
