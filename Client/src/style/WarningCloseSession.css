@@ -1,0 +1,32 @@
+.warning-close-session {
+  /* Estilos para el formulario */
+  background-color: #f3f3f3;
+  padding: 20px;
+}
+
+.form-group {
+  /* Estilos para los grupos de formulario */
+  margin-bottom: 10px;
+}
+
+.btn_primary {
+  /* Estilos para el botón primario */
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 3px;
+}
+
+.cancelarWarningButton {
+  /* Estilos para el botón de cancelar */
+  background-color: #a71515;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Agrega más estilos según tus necesidades */

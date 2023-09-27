@@ -1,4 +1,7 @@
-import "./chart.scss";
+import { useSelector } from "react-redux";
+import "./chart.css";
+import Modal from "../Modal/Modal";
+import WarningCloseSession from "../Forms/WarningCloseSession"
 import {
   AreaChart,
   Area,
@@ -18,6 +21,8 @@ const data = [
 ];
 
 const Chart = ({ aspect, title }) => {
+
+      const activeModal = useSelector((state) => state.modal);
   return (
     <div className="chart">
       <div className="title">{title}</div>
@@ -46,6 +51,13 @@ const Chart = ({ aspect, title }) => {
           />
         </AreaChart>
       </ResponsiveContainer>
+         {activeModal.active && (
+                <Modal>
+                    {activeModal.name === "Warning Close Session" && (
+                        <WarningCloseSession />
+                    )}
+                </Modal>
+            )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import "./table.scss";
+import "./table.css";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,9 +6,20 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { useEffect } from "react";
+import { getProducts } from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const List = () => {
+    const dispatch = useDispatch()
+
+    const sale = useSelector((state) => state.sale)
+
+    console.log(sale)
+    useEffect(() => {
+        dispatch(getProducts()).catch((error) => console.log(error))
+    }, []);
 
   const rows = [
     {

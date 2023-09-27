@@ -1,0 +1,64 @@
+/* Estilos generales */
+.cellWithImg {
+  display: flex;
+  align-items: center;
+}
+
+.cellImg {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.cellWithActive {
+  display: flex;
+  align-items: center;
+}
+
+.activeGreen {
+  color: green;
+}
+
+.activeRed {
+  color: red;
+}
+
+.productContainer {
+    max-height: 30px;
+    overflow-y: scroll;
+    /* border: #7d1d1d; */
+    padding: 10px;
+}
+
+.productItem {
+  margin-bottom: 1%;
+}
+
+/* Estilos específicos para cada campo */
+#id .MuiDataGrid-cell {
+  font-weight: bold;
+}
+
+#email .MuiDataGrid-cell {
+  font-style: italic;
+  margin-bottom: 5px; /* Agrega un margen inferior para separar más el campo de email */
+}
+
+#phone_Number .MuiDataGrid-cell {
+  font-family: monospace;
+  margin-top: 5px; /* Agrega un margen superior para separar más el número de teléfono */
+}
+
+
+#active .MuiDataGrid-cell {
+  display: flex;
+  align-items: center;
+}
+
+#product .MuiDataGrid-cell {
+  font-weight: bold;
+}
+
+#phone_Number .MuiDataGrid-cell {
+  font-family: monospace;
+}

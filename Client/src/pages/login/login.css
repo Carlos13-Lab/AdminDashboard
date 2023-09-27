@@ -1,0 +1,287 @@
+.loginPageContent {
+  display: flex;
+  height: 100vh;
+  padding: 0;
+  grid-column: 1 / -1;
+}
+
+.imgContent {
+  width: 50%;
+  height: 100%;
+}
+
+.imgLogin {
+  transform: translateX(-110px);
+  height: 100%;
+  width: 100%;
+  object-fit: fill;
+}
+
+.formsContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 50%;
+}
+
+.logoContent {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.needToAlign {
+  color: transparent;
+}
+
+.NOneedToAlign {
+color: black;
+cursor: pointer
+}
+
+.arrowBack {
+  color: black;
+  font-size: 2rem;
+  cursor: pointer;
+  margin-left: 1rem;
+}
+
+.logo {
+  width: 130px;
+  padding: 1rem;
+}
+
+.motivatingPhraseContent {
+  padding: 1rem;
+  margin: 0 auto;
+}
+
+.motivatingPhraseContent h3 {
+  color: #0d234e;
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.motivatingPhraseContent p {
+  color: #0d234e;
+  font-weight: 400;
+  font-size: 22px;
+}
+
+.choiceLoginButtons {
+  display: flex;
+  flex-direction: column;
+  width: 55%;
+  height: 100%;
+  margin-top: 2rem;
+}
+
+.choiceFormButton {
+  border: none;
+  border-radius: 6px;
+  background-color: rgb(25, 88, 131);
+  color: black;
+  width: 100%;
+  cursor: pointer;
+  padding: 0.5em 3em;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.choiceFormButton:hover {
+  background-color: skyblue;
+  box-shadow: none;
+}
+
+.boxForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #12676f;
+  border-radius: 6px;
+  flex-direction: column;
+  width: 60%;
+  height: 100%;
+  margin-bottom: 2rem;
+  padding: 5px;
+}
+
+.formContent {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px;
+  height: 100%;
+}
+
+.contentInput {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.customInput {
+  border: 1.5px solid #b9b9b9;
+  border-radius: 6px;
+  background-color: #fff;
+  padding: 0.5em;
+  width: 100%;
+}
+
+.customInput:focus {
+  background-color: #fff;
+}
+
+.formikError {
+  color: tomato;
+  font-size: small;
+}
+
+.buttonSubmit {
+  width: 100%;
+  border: none;
+  border-radius: 15px;
+  padding: 20px;
+  background-color: #efb365;
+}
+.btn_primaryLogin {
+  /* Estilos para el botón primario */
+  background-color: #0d234e;
+  margin: 5px;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3%;
+  cursor: pointer;
+}
+
+.resetPassword {
+  color: var(--segundo-color);
+  cursor: pointer;
+  font-size: small;
+}
+
+.resetPassword:hover {
+  color: var(--primer-color);
+}
+
+.logoModal {
+  width: 35%;
+  margin: 0 auto;
+  display: block;
+}
+
+.modalBody {
+  padding: 1rem;
+}
+
+.modalBackground {
+  position: absolute;
+  right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(10, 10, 10, 0.86);
+}
+
+.modalCard {
+  margin: 0 auto;
+  display: block;
+  margin-top: 3rem;
+  width: 25rem;
+  height: 16rem;
+  background-color: white;
+  border-radius: 6px;
+  padding: 1rem;
+  transition: var(--transition);
+}
+
+@media only screen and (max-width: 1400px) {
+  .imgLogin {
+    transform: translateX(0);
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .imgContent {
+    display: none;
+  }
+
+  .formsContent {
+    width: 100%;
+  }
+
+  .choiceLoginButtons {
+    width: 45%;
+  }
+
+  .boxForm {
+    width: 50%;
+    height: 40%;
+  }
+
+  .choiceLoginButtons {
+    height: 40%;
+  }
+
+  .loginPageContent {
+    display: flex;
+    height: 100vh;
+    padding: 0;
+    width: 100%;
+  }
+
+  .motivatingPhraseContent h3 {
+    font-size: 35px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .logo {
+    width: 200px;
+  }
+
+  .motivatingPhraseContent {
+    padding: 0;
+  }
+
+  .motivatingPhraseContent h3 {
+    font-size: 30px;
+  }
+
+  .choiceLoginButtons {
+    width: 90%;
+  }
+
+  .boxForm {
+    width: 90%;
+    height: 35%;
+  }
+
+  .choiceLoginButtons {
+    width: 90%;
+    height: 35%;
+  }
+
+  .loginPageContent {
+    height: 100vh;
+    padding: 0;
+  }
+
+  .formsContent {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .modalCard {
+    width: 100%;
+  }
+}

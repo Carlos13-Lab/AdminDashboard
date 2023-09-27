@@ -1,4 +1,4 @@
-import "./sidebar.scss";
+import "./sidebar.css";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
@@ -12,11 +12,17 @@ import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSyst
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link } from "react-router-dom";
-import { DarkModeContext } from "../../context/darkModeContext";
-import { useContext } from "react";
+import { showModal } from "../../redux/actions";
+import { useDispatch} from "react-redux";
 
 const Sidebar = () => {
-  const { dispatch } = useContext(DarkModeContext);
+  const dispatch = useDispatch()
+
+  const handleWarnings = (event) => {
+        event.preventDefault();
+        dispatch(showModal("Warning Close Session"));
+    };
+
   return (
     <div className="sidebar">
       <div className="top">
@@ -38,22 +44,22 @@ const Sidebar = () => {
           <Link to="/users" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
-              <span>Users</span>
+              <span>Usuarios</span>
             </li>
           </Link>
           <Link to="/products" style={{ textDecoration: "none" }}>
             <li>
               <StoreIcon className="icon" />
-              <span>Products</span>
+              <span>Productos</span>
             </li>
           </Link>
           <li>
             <CreditCardIcon className="icon" />
-            <span>Orders</span>
+            <span>Ventas</span>
           </li>
           <li>
             <LocalShippingIcon className="icon" />
-            <span>Delivery</span>
+            <span>Servicios</span>
           </li>
           <p className="title">USEFUL</p>
           <li>
@@ -82,21 +88,12 @@ const Sidebar = () => {
             <AccountCircleOutlinedIcon className="icon" />
             <span>Profile</span>
           </li>
-          <li>
+          <li onClick={handleWarnings}>
             <ExitToAppIcon className="icon" />
-            <span>Logout</span>
+            <span
+            >Cerrar sesion</span>
           </li>
         </ul>
-      </div>
-      <div className="bottom">
-        <div
-          className="colorOption"
-          onClick={() => dispatch({ type: "LIGHT" })}
-        ></div>
-        <div
-          className="colorOption"
-          onClick={() => dispatch({ type: "DARK" })}
-        ></div>
       </div>
     </div>
   );

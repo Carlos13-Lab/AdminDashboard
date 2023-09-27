@@ -2,21 +2,29 @@ const localStorage = window.localStorage.getItem('loggedAppUser')
     ? JSON.parse(window.localStorage.getItem('loggedAppUser'))
     : undefined;
 
-// const localCourses = window.localStorage.getItem('courses')
-//     ? JSON.parse(window.localStorage.getItem('courses'))
-//     : undefined;
-// const localGrades = window.localStorage.getItem('grades')
-//     ? JSON.parse(window.localStorage.getItem('grades'))
-//     : undefined;
+const localProducts = window.localStorage.getItem('products')
+    ? JSON.parse(window.localStorage.getItem('products'))
+    : undefined;
 
-// const localCourse = window.localStorage.getItem('course')
-//     ? JSON.parse(window.localStorage.getItem('course'))
-//     : undefined;
+const localProduct = window.localStorage.getItem('product')
+    ? JSON.parse(window.localStorage.getItem('product'))
+    : undefined;
+
+const localservice = window.localStorage.getItem('service')
+    ? JSON.parse(window.localStorage.getItem('service'))
+    : undefined;
+
 
 const initialState = {
     users: [],
     user: localStorage ? localStorage : {},
+    products: localProducts ? localProducts : {},
+    product: localProduct ? localProduct : {},
+    profiles: [],
+    services: localservice ? localservice : {},
     modal: { name: '', active: false },
+    usersTotal: '',
+    productsTotal: ''
 };
 
 function rootReducer(state = initialState, action) {
@@ -32,6 +40,16 @@ function rootReducer(state = initialState, action) {
                 ...state,
                 user: action.payload,
             };
+        case 'GET_USER_TOTAL':
+            return {
+                ...state,
+                usersTotal: action.payload,
+            };
+        case 'GET_PRODUCTS_TOTAL':
+            return {
+                ...state,
+                productsTotal: action.payload,
+            };
         case 'LOGOUT':
             return {
                 ...state,
@@ -41,17 +59,18 @@ function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 user: action.payload,
+                
             };
-        //EVETS
-        case 'GET_EVENTS':
+        //PRODUCTS
+        case 'GET_PRODUCT':
             return {
                 ...state,
-                events: action.payload,
+                product: action.payload,
             };
-        case 'GET_EVENT':
+        case 'GET_PRODUCTS':
             return {
                 ...state,
-                event: action.payload,
+                products: action.payload,
             };
         case 'DELETE_EVENT':
             return {
@@ -72,11 +91,11 @@ function rootReducer(state = initialState, action) {
                 ...state,
                 events: [...state.events, action.payload],
             };
-        //GRADES
-        case 'GET_GRADES':
+        //SERVICES
+        case 'GET_SERVICES':
             return {
                 ...state,
-                grades: action.payload,
+                services: action.payload,
             };
         case 'GET_GRADE':
             return {
@@ -134,10 +153,10 @@ function rootReducer(state = initialState, action) {
             };
 
         // Profile
-        case 'GET_PROFILE':
+        case 'GET_PROFILES':
             return {
                 ...state,
-                profile: action.payload,
+                profiles: action.payload,
             };
 
         // Modal

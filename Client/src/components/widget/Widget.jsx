@@ -1,23 +1,37 @@
-import "./widget.scss";
+import "./widget.css";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUsertotal,getProducttotal } from "../../redux/actions";
+import { Link } from "react-router-dom";
 
 const Widget = ({ type }) => {
   let data;
-
-  //temporary
   const amount = 100;
-  const diff = 20;
+
+  const usertotal = useSelector((state) => state.usersTotal)
+  const productTotal = useSelector((state) => state.productsTotal)
+
+
+  
+  const dispatch = useDispatch()
+      useEffect(() => {
+        dispatch(getUsertotal()).catch((error) => console.log(error))
+        dispatch(getProducttotal()).catch((error) => console.log(error))
+
+    }, []);
 
   switch (type) {
     case "user":
       data = {
         title: "USERS",
         isMoney: false,
-        link: "See all users",
+        link: <Link to={"/users"}>See all users</Link>,
+        Total: usertotal,
         icon: (
           <PersonOutlinedIcon
             className="icon"
@@ -33,7 +47,8 @@ const Widget = ({ type }) => {
       data = {
         title: "ORDERS",
         isMoney: false,
-        link: "View all orders",
+        link: <Link to={"/products"}>View all orders</Link>,
+        Total: productTotal,
         icon: (
           <ShoppingCartOutlinedIcon
             className="icon"
@@ -49,7 +64,8 @@ const Widget = ({ type }) => {
       data = {
         title: "EARNINGS",
         isMoney: true,
-        link: "View net earnings",
+        link: <Link>View net earnings</Link> ,
+        Total: "",
         icon: (
           <MonetizationOnOutlinedIcon
             className="icon"
@@ -63,6 +79,7 @@ const Widget = ({ type }) => {
         title: "BALANCE",
         isMoney: true,
         link: "See details",
+        Total: "",
         icon: (
           <AccountBalanceWalletOutlinedIcon
             className="icon"
@@ -70,6 +87,7 @@ const Widget = ({ type }) => {
               backgroundColor: "rgba(128, 0, 128, 0.2)",
               color: "purple",
             }}
+          
           />
         ),
       };
@@ -77,13 +95,15 @@ const Widget = ({ type }) => {
     default:
       break;
   }
+ let diff = (parseFloat(data.Total) / 100) * 100;
 
   return (
     <div className="widget">
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter">
-          {data.isMoney && "$"} {amount}
+          {data.isMoney && "$"} 
+          {data.Total || amount}
         </span>
         <span className="link">{data.link}</span>
       </div>

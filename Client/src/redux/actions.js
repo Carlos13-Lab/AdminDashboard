@@ -7,14 +7,22 @@ import axios from 'axios';
 export function getUsers() {
     return async function (dispatch) {
         var json = await axios.get('/user');
-        console.log(json.data.data)
         return dispatch({
             type: 'GET_USERS',
-            payload: json.data.data.user,
+            payload: json.data.data.user,     
+        });
+    };
+
+}
+export function getUsertotal() {
+    return async function (dispatch) {
+        var json = await axios.get('/user');
+        return dispatch({
+            type: 'GET_USER_TOTAL',
+            payload: json.data.data.total,
         });
     };
 }
-
 export function getUser(id) {
     return async function (dispatch) {
         var json = await axios.get(`/user/${id}`);
@@ -26,14 +34,20 @@ export function getUser(id) {
     };
 }
 
-export function deleteUser(id, token) {
+export function PostUserProduct(id) {
     return async function (dispatch) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-        };
-        await axios.delete('/user/' + id, config);
+        var json = await axios.post(`/user/${id}`);
+        return dispatch({
+            type: 'GET_USER',
+            payload: json.data,
+        });
+    };
+}
+
+export function deleteUser(id, ) {
+    return async function (dispatch) {
+
+        await axios.delete('/user/' + id);
         var json = await axios.get('/user');
         console.log(json.data);
         return dispatch({
@@ -43,14 +57,9 @@ export function deleteUser(id, token) {
     };
 }
 
-export function updateUser(data, id, token) {
+export function updateUser(data, id) {
     return async function (dispatch) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-        };
-        await axios.put('/user/' + id, data, config);
+        await axios.put('/user/' + id, data);
         var json = await axios.get('/user');
         return dispatch({
             type: 'GET_USERS',
@@ -59,14 +68,10 @@ export function updateUser(data, id, token) {
     };
 }
 
-export function postUser(data, token) {
+export function AddUser(data) {
     return async function (dispatch) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-        };
-        await axios.post('/user', data, config);
+        await axios.post('/user/', data);
+        console.log(data)
         var json = await axios.get('/user');
         return dispatch({
             type: 'GET_USERS',
@@ -75,48 +80,13 @@ export function postUser(data, token) {
     };
 }
 
-export function getProfile(user_id) {
+export function getProfiles() {
     return async function (dispatch) {
-        let user = await axios.get(`/user/${user_id}`);
-        let courses_array = user.data.data.user.courses;
-
-        const profile = [];
-        await Promise.all(
-            courses_array.map(async (course) => {
-                await axios.get(`/course/${course._id}`).then((course_data) => {
-                    let auxObjt = {
-                        classmates:
-                            course_data.data.data.course.students.filter(
-                                (e) => e._id != user_id
-                            ),
-                        teacher: course_data.data.data.course.teacher,
-                    };
-                    auxObjt.teacher.course =
-                        course_data.data.data.course.courseName;
-                    profile.push(auxObjt);
-                });
-            })
-        );
-        let listStudents = [];
-        let listTeachers = [];
-        profile.map((obj) => {
-            obj.classmates.map((e) => {
-                if (!listStudents.includes(e.fullName)) {
-                    listStudents.push(e.fullName);
-                }
-            });
-            if (
-                !listTeachers.some(
-                    (teacher) => teacher.fullName == obj.teacher.fullName
-                )
-            ) {
-                listTeachers.push(obj.teacher);
-            }
-        });
+        let json = await axios.get(`/profile/`);
 
         return dispatch({
-            type: 'GET_PROFILE',
-            payload: { listStudents, listTeachers },
+            type: 'GET_PROFILES',
+            payload: json.data.data.profiles
         });
     };
 }
@@ -138,9 +108,7 @@ export function login({ email, password, role }) {
     let data = { email, password };
     return async function (dispatch) {
         var json = await axios.post(`/auth/login`, data);
-        console.log(data)
         const resRole = json.data.data.user.role;
-        console.log(resRole)
         if (resRole != role) {
             if (resRole != 'admin') {
                 throw new Error('Incorrect role');
@@ -154,7 +122,7 @@ export function login({ email, password, role }) {
 }
 
 //============================
-//         GRADES
+//         Service
 //============================
 
 export function getGrade(courses_id, student_id) {
@@ -191,21 +159,12 @@ export function getGrade(courses_id, student_id) {
     };
 }
 
-export function addGrade(course_id, data, token) {
+export function GetServices() {
     return async function (dispacht) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-        };
-
-        await axios.post(`/grade/student/${course_id}`, data, config);
-        let course = await axios.get(`/course/${course_id}`);
-        course = course.data.data.course;
-
+        let json = await axios.get("/service");
         return dispacht({
-            type: 'GET_COURSE_ID',
-            payload: course,
+            type: 'GET_SERVICES',
+            payload: json.data.data.service,
         });
     };
 }
@@ -253,10 +212,23 @@ export function updateGrade(data, course_id, token) {
 }
 
 //============================
-//         COURSES
+//         PRODUCTS
 //============================
 
-export function getCourses(id) {
+
+export function getProducttotal() {
+    return async function (dispatch) {
+        var json = await axios.get('/product');
+        console.log(json.data.data.total)
+        return dispatch({
+            type: 'GET_PRODUCTS_TOTAL',
+            payload: json.data.data.total,
+        });
+    };
+}
+
+
+export function getProductById(id) {
     return async function (dispatch) {
         var json = await axios.get(`/user/${id}`);
         window.localStorage.setItem(
@@ -266,17 +238,6 @@ export function getCourses(id) {
         return dispatch({
             type: 'GET_USER_COURSES',
             payload: json.data.data.user.courses,
-        });
-    };
-}
-export function getAllCourses() {
-    return async function (dispacht) {
-        let courses = await axios.get(`/course`);
-        courses = courses.data.data.course;
-        window.localStorage.setItem('courses', JSON.stringify(courses));
-        return dispacht({
-            type: 'GET_COURSES_ALL',
-            payload: courses,
         });
     };
 }
@@ -292,17 +253,16 @@ export function getCourseById(id) {
     };
 }
 
-export function getCourse() {
+export function getProducts() {
     return async function (dispatch) {
-        var json = await axios.get('/course/');
-
+        var json = await axios.get('/product/');
         window.localStorage.setItem(
-            'courses',
-            JSON.stringify(json.data.data.course)
+            'products',
+            JSON.stringify(json.data.data.product)
         );
         return dispatch({
-            type: 'GET_COURSE',
-            payload: json.data.data.course,
+            type: 'GET_PRODUCTS',
+            payload: json.data.data.product,
         });
     };
 }
@@ -325,46 +285,34 @@ export function deleteCourse(id, token) {
     };
 }
 
-export function updateCourse(data, id, token) {
+export function updatedProduct(data, id) {
     return async function (dispatch) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-        };
-        await axios.put(`/course/${id}`, data, config);
-        let courses = await axios.get(`/course`);
-        courses = courses.data.data.course;
-        window.localStorage.setItem('courses', JSON.stringify(courses));
+        await axios.put('/product/' + id, data);
+        console.log(id, data)
+        var products = await axios.get('/product');
+        console.log(products)
+        products = products.data.data.product;
+        window.localStorage.setItem('products', JSON.stringify(products));
         return dispatch({
-            type: 'GET_COURSES_ALL',
-            payload: courses,
+            type: 'GET_PRODUCT',
+            payload: products,
         });
     };
 }
 
-export function addCourse(data, token) {
+export function AddProduct(id, data ) {
     return async function (dispatch) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-        };
-        if (data.courseName == '') {
-            delete data.courseName;
-        }
-        await axios.post(`/course/`, data, config);
-
-        let courses = await axios.get(`/course`);
-        courses = courses.data.data.course;
-        window.localStorage.setItem('courses', JSON.stringify(courses));
+        await axios.post(`/product/createproduct/${id}`, data);
+        let products = await axios.get(`/product`);
+        products = products.data.data.product;
+        window.localStorage.setItem('products', JSON.stringify(products));
         return dispatch({
-            type: 'GET_COURSES_ALL',
-            payload: courses,
+            type: 'GET_PRODUCTS',
+            payload: products,
         });
     };
 }
-//============================
+//============================ 
 //       NOTIFICATIONS
 //============================
 

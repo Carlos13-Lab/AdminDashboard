@@ -1,0 +1,80 @@
+
+
+.modalWarningBackground {
+    position: absolute;
+    right: 0;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(117, 117, 117, 0.123);
+    z-index: 999999;
+}
+
+.modalWarningCard {
+    margin: 0 auto;
+    display: block;
+    margin-top: 3rem;
+    width: 25rem;
+    height: 19rem;
+    background-color: white;
+    border-radius: 6px;
+    padding: 1rem;
+    transition: var(--transition);
+}
+
+.modalWarningBody {
+    padding: 1rem;
+}
+
+.logoWarningModal {
+    width: 35%;
+    margin: 0 auto;
+    display: block;
+}
+
+.customWarningInput {
+    border: 1.5px solid #b9b9b9;
+    border-radius: 6px;
+
+    background-color: #fff;
+    padding: 0.5em;
+    width: 100%;
+}
+
+.customWarningInput:focus {
+    background-color: #fff;
+}
+
+.cancelarWarningButton {
+background-color: #d23333c4;
+  border: 0.15rem solid #b92626;
+    cursor: pointer;
+}
+
+.pSoftColorWarning {
+    color: #6e6d6d;
+    margin: 0;
+}
+
+.pSoftColorWarning span {
+    color: #000;
+}
+
+.warningMargin {
+    margin: 0;
+}
+
+/*  Inputs del modal*/
+
+.customInput {
+    border: 1.5px solid #b9b9b9;
+    border-radius: 6px;
+
+    background-color: #fff;
+    padding: 0.5em;
+    width: 100%;
+}
+
+.customInput:focus {
+    background-color: #fff;
+}

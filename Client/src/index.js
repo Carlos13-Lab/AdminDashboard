@@ -7,7 +7,7 @@ import App from "./App";
 import { DarkModeContextProvider } from "./context/darkModeContext";
 
 
-axios.defaults.baseURL = "http://localhost:5000/api/demo";
+axios.defaults.baseURL = "http://localhost:5001/api/demo";
 
 
 ReactDOM.render(

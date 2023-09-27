@@ -1,0 +1,27 @@
+.delete-user-container {
+  margin: 20px;
+}
+
+.warning-margin {
+  margin-bottom: 10px;
+}
+
+.p-soft-color-warning {
+  color: #888888;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin-right: 10px;
+}
+
+.cancelar-warning-button {
+  background-color: #dc3545;
+}
+
+.mt-2 {
+  margin-top: 10px;
+}
