@@ -1,3 +1,4 @@
+const Products = require('../models/products');
 const Sale = require('../models/sale');
 const User = require('../models/user')
 
@@ -11,29 +12,38 @@ const findById = async (id) => {
 };
 
 const newSale = async (body) => {
-    const { status, saleDate, clientId, Info, sellerId} = body;
+    const { status, saleDate, clientId, Info, sellerId } = body;
 
     const sale = new Sale({
-        status, saleDate, Info: [], clientId: [], sellerId: []
+        status,
+        saleDate,
+        Info: [Info],
+        clientId: [clientId],
+        sellerId: [sellerId],
     });
 
-    const userSeller = await User.findById(sellerId)
-    const userClient  = await User.findById(clientId)
+    const productUpdateResult = await Products.updateMany(
+        
+       
+        { id: Info },
+        { $set: { status: false } }
+    );
+    console.log('Sale updated:', productUpdateResult);
+    console.log(productUpdateResult.id)
+    const userSeller = await User.findById(sellerId);
+    const userClient = await User.findById(clientId);
 
+    sale.save();
+    userSeller.sale.push(sale._id);
+    userClient.product.push(Info);
 
-    sale.sellerId.push(sellerId)
-    sale.clientId.push(clientId)
-    sale.Info.push(Info)
-    await sale.save();
+    await Promise.all([userSeller.save(), userClient.save()]);
 
-    userSeller.sale.push(sale._id)
-    await userSeller.save()
-    userClient.product.push(Info)
-    await userClient.save()
-    const savedSale = await findById(sale._id);
+    const savedSale = await Sale.findById(sale._id);
 
     return savedSale;
 };
+
 
 const findByIdandUpdate = async ({ id, body }) => {
     const {

@@ -1,7 +1,9 @@
 const { serverError, success , error} = require('../helpers/response.js');
+const { newProducts, findById } = require('../services/products_service.js');
+const Sale = require('../models/sale.js');
+const Profiles = require('../models/profiles.js');
 const Products = require('../models/products.js');
-
-const { newProducts, findByIdandUpdate, findById } = require('../services/products_service.js')
+const User = require('../models/user.js')
 
 
 const Newproduct = async (req, res) => {
@@ -82,42 +84,75 @@ const productGetById = async (req, res) => {
     }
 };
 const updatedProduct = async (req, res) => {
-    const { id } = req.params;
-
-    const { body } = req;
-
-    let data = {};
-
     try {
-        data = await findByIdandUpdate({ id, body });
-    } catch (err) {
-        return serverError({
-            res,
-            message: err.message,
-            status: 500
-        });
-    }
+        const { id } = req.params;
+        const { service, ...rest } = req.body;
 
-    if (Object.keys(data).length > 0) {
-        return success({
-            res,
-            message: 'product updated',
-            data,
-            status: 201,
-        });
-    }
+        const productPast = await Products.findById(id);
 
-    return error({
-        res,
-        message: 'product not found',
-        status: 404
-    });
+        // Dejar todo como estaba si no se selecciona nada
+        if (!service) {
+            rest.service = productPast.service;
+        } else {
+            rest.service = service;
+        }
+
+        const product = await Products.findByIdAndUpdate(id, { service: rest.service, ...rest }, { new: true });
+
+        return res.status(200).json({ message: 'product updated', product });
+    } catch (error) {
+        console.error(`Error in Updateproduct: ${error}`);
+        return res.status(500).json({ error: 'Error updating a product' });
+    }
 };
+
+
+
+const productDelete = async (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log(id);
+
+        const product = await Products.findByIdAndDelete(id);
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        const saleUpdateResult = await Sale.updateMany(
+            { 'Info': product.id },
+            {
+                $unset: { Info: 1 },
+                $set: { status: false }
+            }
+        );
+        console.log('Sale updated:', saleUpdateResult);
+
+        const profilesDeletedPast = await Profiles.findOneAndDelete({ 'product': product.id });
+        console.log('Profiles deleted:', profilesDeletedPast);
+
+        const usersUpdateResult = await User.updateMany(
+            { 'product': product.id },
+            { $unset: { product: 1 } }
+        );
+        console.log('Users updated:', usersUpdateResult);
+
+        return res.status(201).json({
+            message: "Product deleted successfully",
+            data: product,
+        });
+    } catch (error) {
+        console.error(`Error in productDelete: ${error}`);
+        return res.status(500).json({ message: 'Error deleting the product' });
+    }
+};
+
 
 
 module.exports = {
     Newproduct,
     productsGet,
     productGetById,
-    updatedProduct
+    updatedProduct,
+    productDelete
 }

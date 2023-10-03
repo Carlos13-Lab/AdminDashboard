@@ -1,3 +1,4 @@
+const { populate } = require("../models/products");
 const User = require("../models/user");
 // const { encryptPassword } = require("../helpers/crypto");
 
@@ -8,10 +9,26 @@ const findById = async (id) => {
 };
 
 const findByIdSeller = async (id) => {
-  const user = await User.findById(id,
-    ["userName", "email", "phone_Number", "role", "active"]).populate({path: 'sale', select: 'saleDate'})
+  const user = await User.findById(id, ["userName", "email", "phone_Number", "role", "active"])
+    .populate([{ path: 'sale', select: 'saleDate', 
+      populate: [
+        {
+          path: 'clientId',
+          select: 'userName email role'
+        },
+        {
+          path: 'Info',
+          select: 'email',
+          populate: {
+              path: 'service',
+              select: 'name'
+          }
+        },
+      ]
+  }])
   return user;
 };
+
 
 const findByEmail = async (email) => {
   const user = await User.findOne({ email }, 

@@ -1,5 +1,6 @@
 const { serverError, success, error } = require("../helpers/response.js");
 const Services = require("../models/Streamingservices.js");
+const Products = require("../models/products.js")
 
 const { newServices , findByIdandUpdate, findByIdServices} = require("../services/services_service.js");
 
@@ -98,10 +99,44 @@ const updateServices = async (req, res) => {
   });
 };
 
+const ServicesDelete = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+
+    const services = await Services.findByIdAndDelete(id);
+
+    if (!services) {
+      return res.status(404).json({ message: 'Services not found' });
+    }
+
+    const UpdateResult = await Products.updateMany(
+      { 'service': services.id },
+      {
+        $unset: { Info: 1 },
+        $set: { status: false }
+      }
+    );
+    console.log('Sale updated:', UpdateResult);
+
+    return success({
+      res,
+      message: "DELETE API - DELETE of service for ID",
+      data: services,
+      status: 201,
+    });
+
+  } catch (error) {
+    console.error(`Error in ServicesDelete: ${error}`);
+    return res.status(500).json({ message: 'Error deleting the Services' });
+  }
+};
+
 
 module.exports = {
   NewService,
   servicesGet,
   serviceGetById,
-  updateServices
+  updateServices,
+  ServicesDelete
 };
