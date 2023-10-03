@@ -11,6 +11,7 @@ import "./style/dark.css";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import { useDispatch, useSelector } from "react-redux";
+import ListServices from "./pages/list/ListServices";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -32,26 +33,18 @@ function App() {
             <Route path="users">
               <Route index element={<List />} />
               <Route path=":userId" element={<Single />} />
-              <Route
-                path="new"
-                element={<New inputs={userInputs} title="Add New User" />}
-              />
             </Route>
             <Route path="products">
               <Route index element={<ListProducts />} />
               <Route path=":productId" element={<Single />} />
-              <Route
-                path="new"
-                element={<New inputs={productInputs} title="Add New Product" />}
-              />
             </Route>
             <Route path="profiles">
               <Route index element={<ListProfiles />} />
               <Route path=":productId" element={<Single />} />
-              <Route
-                path="new"
-                element={<New inputs={productInputs} title="Add New Product" />}
-              />
+            </Route>
+            <Route path="services">
+              <Route index element={<ListServices />} />
+              <Route path=":productId" element={<Single />} />
             </Route>
           </Route>
         </Routes>

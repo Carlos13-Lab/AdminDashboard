@@ -9,6 +9,9 @@
   height: 20px;
   margin-right: 5px;
 }
+.cellWithnicon {
+ padding-right: 10px;
+} 
 
 .cellWithActive {
   display: flex;
@@ -23,6 +26,11 @@
   color: red;
 }
 
+.passwordContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 .productContainer {
     max-height: 30px;
     overflow-y: scroll;

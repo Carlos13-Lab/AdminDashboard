@@ -1,43 +1,38 @@
 import { useDispatch } from "react-redux";
-import { deleteUser, hideModal } from "../../redux/actions";
+import { deleteServices, hideModal } from "../../redux/actions";
 import "../Modal/modalgeneral.css"
 import '../../style/deleteUsers.css'
 import Swal from "sweetalert2";
 
 
-const DeleteUser = ({ data }) => {
-    const {params, id  } = data;
+const DeleteServices = ({ data }) => {
+    const { id, params } = data;
 
     const dispatch = useDispatch();
 
     const handleSubmit = (e, id) => {
         e.preventDefault();
-        dispatch(deleteUser(id))
+        dispatch(deleteServices(id))
             .then(() => dispatch(hideModal()))
             .catch((error) => console.log(error));
-                    Swal.fire(
-        'Listooo tu Usuario a sido eliminado!',
-        'Pulsa el boton para terminar el proceso!',
-        'Terminar',
-        )
+
     };
     return (
         <div>
             <div>
                 <div>
                     <p className="warningMargin">
-                        <strong>¿Querés eliminar este usuario?</strong>
+                        <strong>¿Querés eliminar este Servicio?</strong>
                     </p>
                     <p className="pSoftColorWarning">
-                        Estás por eliminar a <span>{`${params.row.userName}`}</span>{" "}
-                        de forma permanente y ya no tendrá acceso a la
-                        plataforma
+                        Estás por eliminar este servicio <span>{`${params.row.name}`}</span>{" "}
+                        de forma permanente.
                     </p>
                 </div>
                 <form onSubmit={(e) => handleSubmit(e, id)}>
                     <button className="btn_primary mt-2">
                         {" "}
-                        <strong>Eliminar Usuario</strong>
+                        <strong>Eliminar Servicio</strong>
                     </button>
                     <button
                         onClick={() => dispatch(hideModal())}
@@ -52,4 +47,4 @@ const DeleteUser = ({ data }) => {
     );
 };
 
-export default DeleteUser;
+export default DeleteServices;

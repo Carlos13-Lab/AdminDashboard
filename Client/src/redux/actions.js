@@ -125,36 +125,13 @@ export function login({ email, password, role }) {
 //         Service
 //============================
 
-export function getGrade(courses_id, student_id) {
+export function addServices(data) {
     return async function (dispatch) {
-        let grades = await axios.get('/grade');
-        grades = grades.data.data.grade;
-        let studentGrades = [];
-        courses_id.map((id) => {
-            let gradesCourse = grades.filter(
-                (grade) => grade.course_id._id == id
-            )[0];
-
-            if (gradesCourse.studentGrades) {
-                let gradesList = gradesCourse.studentGrades.filter(
-                    (objGrade) => objGrade.student_id === student_id
-                )[0];
-
-                if (gradesList) {
-                    gradesList.grades.map((e) =>
-                        studentGrades.push(
-                            Object.assign(e, {
-                                course: gradesCourse.course_id.courseName,
-                            })
-                        )
-                    );
-                }
-            }
-        });
-
+        await axios.post('/service/createservice', data);
+        let json = await axios.get("/service");
         return dispatch({
-            type: 'GET_GRADE',
-            payload: studentGrades,
+            type: 'GET_SERVICES',
+            payload: json.data.data.service
         });
     };
 }
@@ -169,44 +146,28 @@ export function GetServices() {
     };
 }
 
-export function deleteGrade(student_id, course_id, token) {
+export function deleteServices(id, data) {
     return async function (dispacht) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-            data: {
-                student_id: student_id,
-            },
-        };
-
-        await axios.delete(`/grade/student/${course_id}`, config);
-
-        let course = await axios.get(`/course/${course_id}`);
-        course = course.data.data.course;
-
+        await axios.delete(`/service/${id}`, data);
+        let json = await axios.get(`/service/`);
         return dispacht({
-            type: 'GET_COURSE_ID',
-            payload: course,
+            type: 'GET_SERVICES',
+            payload: json.data.data.service,
         });
     };
 }
 
-export function updateGrade(data, course_id, token) {
+export function updateService(id, data) {
     return async function (dispacht) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-        };
 
-        await axios.put(`/grade/student/${course_id}`, data, config);
-        let course = await axios.get(`/course/${course_id}`);
-        course = course.data.data.course;
+        await axios.put(`/service/${id}`, data);
+        console.log(data, id)
+        let services = await axios.get(`/service`);
+        services = services.data.data.service;
 
         return dispacht({
-            type: 'GET_COURSE_ID',
-            payload: course,
+            type: 'GET_SERVICES',
+            payload: services,
         });
     };
 }
@@ -267,39 +228,29 @@ export function getProducts() {
     };
 }
 
-export function deleteCourse(id, token) {
+export function deleteProduct(id) {
     return async function (dispatch) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-        };
-        await axios.delete(`/course/${id}`, config);
-        let courses = await axios.get(`/course`);
-        courses = courses.data.data.course;
-        window.localStorage.setItem('courses', JSON.stringify(courses));
-        return dispatch({
-            type: 'GET_COURSES_ALL',
-            payload: courses,
-        });
-    };
-}
-
-export function updatedProduct(data, id) {
-    return async function (dispatch) {
-        await axios.put('/product/' + id, data);
-        console.log(id, data)
-        var products = await axios.get('/product');
-        console.log(products)
+        await axios.delete(`/product/${id}`);
+        let products = await axios.get(`/product`);
         products = products.data.data.product;
         window.localStorage.setItem('products', JSON.stringify(products));
         return dispatch({
-            type: 'GET_PRODUCT',
+            type: 'GET_PRODUCTS',
             payload: products,
         });
     };
 }
 
+export function updateProduct( id, data) {
+    return async function (dispatch) {
+        await axios.put(`/product/${id}`, data);
+        var json = await axios.get('/product');
+        return dispatch({
+            type: 'GET_PRODUCTS',
+            payload: json.data.data.product
+        });
+    };
+}
 export function AddProduct(id, data ) {
     return async function (dispatch) {
         await axios.post(`/product/createproduct/${id}`, data);

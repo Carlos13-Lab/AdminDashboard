@@ -10,13 +10,18 @@ const localProduct = window.localStorage.getItem('product')
     ? JSON.parse(window.localStorage.getItem('product'))
     : undefined;
 
-const localservice = window.localStorage.getItem('service')
-    ? JSON.parse(window.localStorage.getItem('service'))
+const localservice = window.localStorage.getItem('services')
+    ? JSON.parse(window.localStorage.getItem('services'))
+    : undefined;
+
+const localService = window.localStorage.getItem('services')
+    ? JSON.parse(window.localStorage.getItem('services'))
     : undefined;
 
 
 const initialState = {
     users: [],
+    service: localService ? localService : {},
     user: localStorage ? localStorage : {},
     products: localProducts ? localProducts : {},
     product: localProduct ? localProduct : {},

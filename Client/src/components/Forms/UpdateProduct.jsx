@@ -1,20 +1,24 @@
 import { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { hideModal, updatedProduct } from "../../redux/actions";
+import { hideModal, updateProduct } from "../../redux/actions";
 import "../../style/addUsers.css";
+import Swal from 'sweetalert2'
 
-const UpdateUser = ({ data }) => {
+
+const UpdateProduct = ({ data }) => {
   const dispatch = useDispatch();
   const services = useSelector((state) => state.services);
   const { params, id } = data;
-  const { email, password, service} = params.row;
+  const { email, password, service} = params
+  console.log(params.rows)
 
-  const [product, setProduct] = useState({
-    email,
-    password,
-    active: true,
-    service: service
-  });
+const [product, setProduct] = useState({
+  email,
+  password,
+  status: true,
+  service: Array.isArray(service) ? service : []
+});
+
 
   const cancel = (event) => {
     event.preventDefault();
@@ -26,29 +30,44 @@ const UpdateUser = ({ data }) => {
   };
 
 const _handleSelect = (event) => {
-    const { value, checked } = event.target;
-    setProduct((prev) => {
-        let services = prev.service;
-        if (checked && !services.includes(value)) {
-            services.push(value);
-            console.log(value)
-        }
-        if (!checked) {
-            services = services.filter((service) => service !== value);
-        }
-        console.log(services)
-        return {
-            ...prev,
-            service: services,
-        };
-    });
+  const { value, checked } = event.target;
+  setProduct((prev) => {
+    let services = [...prev.service]; // Crear un nuevo array mediante la propagación del array de servicios anterior
+
+    if (checked) {
+      // Reemplazar el valor directamente en el array si está marcado y no existe en el array
+      if (!services.includes(value)) {
+        services = [...services, value];
+      }
+    } else {
+      // Eliminar el valor del array si no está marcado
+      services = services.filter((service) => service !== value);
+    }
+
+    // Si no se selecciona nada, dejar el valor que estaba
+    if (!checked && services.length === 0) {
+      services = [...prev.service];
+    }
+
+    return {
+      ...prev,
+      service: services,
+    };
+  });
 };
 
-const _handleSubmit = async (e, data) => {
+
+const _handleSubmit = async (e, data ) => {
     e.preventDefault();
     try {
-        await dispatch(updatedProduct(id, data));
+
+        await dispatch(updateProduct( id.id, data));
         dispatch(hideModal());
+        Swal.fire(
+        'Listooo tu producto esta actualizado!',
+        'Pulsa el boton para terminar el proceso!',
+        'Terminar',
+        )
     } catch (error) {
         console.log(error);
     }
@@ -57,7 +76,7 @@ const _handleSubmit = async (e, data) => {
 
 
   const toggleActive = () => {
-    setProduct((prev) => ({ ...prev, active: !prev.active }));
+    setProduct((prev) => ({ ...prev, status: !prev.status }));
   };
 
   return (
@@ -80,13 +99,13 @@ const _handleSubmit = async (e, data) => {
        <span><strong>Services :</strong> </span>
                 {services
                     ? services.map((service) => {
-                          return (   console.log(service.id),
+                          return (   
                               <Fragment key={service.id}>
-                                  <label htmlFor={service.email}>
+                                  <label htmlFor={service.id}>
                                       <input
                                           type="checkbox"
-                                          id={service.email}
-                                          name="Producto"
+                                          id={service.id}
+                                          name="services"
                                           value={service.id}
                                           onChange={_handleSelect}
                                       />
@@ -102,15 +121,15 @@ const _handleSubmit = async (e, data) => {
         <span>
           <strong>Activo:</strong>
         </span>
-        <label htmlFor="active">
+        <label htmlFor="status">
           <input
             type="checkbox"
-            id="active"
-            name="active"
-            checked={product.active}
+            id="status"
+            name="status"
+            checked={product.status}
             onChange={toggleActive}
           />
-          {product.active ? "Activo" : "Inactivo"}
+          {product.status ? "Activo" : "Inactivo"}
         </label>
       </div>
       <button className="addUsers-button" type="submit">
@@ -123,4 +142,4 @@ const _handleSubmit = async (e, data) => {
   );
 };
 
-export default UpdateUser;
+export default UpdateProduct;

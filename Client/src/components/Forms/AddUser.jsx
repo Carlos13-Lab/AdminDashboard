@@ -7,6 +7,7 @@ import 'react-phone-input-2/lib/style.css';
 import { hideModal, AddUser  } from "../../redux/actions";
 import "../../style/addUsers.css";
 import { Fragment } from "react";
+import Swal from "sweetalert2";
 
 
 
@@ -64,6 +65,11 @@ const _handleSubmit = async (e, data) => {
     try {
         await dispatch(AddUser(data));
         dispatch(hideModal());
+    Swal.fire(
+        'Listooo tu usuario esta agregado!!',
+        'Pulsa el boton para terminar el proceso!',
+        'Terminar',
+        )
     } catch (error) {
         console.log(error);
     }

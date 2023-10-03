@@ -1,46 +1,45 @@
 import "./datatable.css";
 import { DataGrid } from "@mui/x-data-grid";
-import { productsColumns } from "../../datatablesourceProduct";
+import { ServicesColumns } from "../../datatablesourceServices";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getProducts, GetServices, showModal } from "../../redux/actions";
+import { GetServices, showModal } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../Modal/Modal";
 import WarningCloseSession from "../Forms/WarningCloseSession"
-import AddProduct from "../Forms/AddProduct"
-import UpdateProduct from "../Forms/UpdateProduct"
-import DeleteProduct from "../Forms/DeleteProduct"
+import AddServices from "../Forms/AddServices"
+import UpdateServices from "../Forms/UpdateServices"
+import DeleteServices from "../Forms/DeleteServices"
 
 
-const DatatableProducts = () => {
-  const products = useSelector((state) => state.products );
+const DatatableServices = () => {
+  const services = useSelector((state) => state.services );
   const activeModal = useSelector((state) => state.modal);
   const [itemData, setItemData] = useState({});
   const dispatch = useDispatch()
   
         const handleModalProductPost = (token) => {
-        dispatch(showModal("Add Product"));
+        dispatch(showModal("Add Services"));
         setItemData({ token });
     }; 
         const handleModalDelete = (id,params) => {
-        dispatch(showModal("Delete Product"));
+        dispatch(showModal("Delete Services"));
         setItemData({
             params,
             id
         });
+             console.log(params, id)
     };
 
             const handleModalUpdate = (params, id) => {
-        dispatch(showModal("Update Product"));
+        dispatch(showModal("Update Services"));
         setItemData({
             params,
             id
         });
-        console.log(params, id)
     };
 
       useEffect(() => {
-        dispatch(getProducts()).catch((error) => console.log(error))
         dispatch(GetServices()).catch((error) => console.log(error))
     }, []);
 
@@ -77,15 +76,15 @@ const DatatableProducts = () => {
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Lista de Productos
+        Lista de Servicio
         <Link className="link" onClick={() => handleModalProductPost()}>
-          Agregar Producto
+          Agregar Servicio
         </Link>
       </div>
       <DataGrid
         className="datagrid"
-        rows={products}
-        columns={productsColumns.concat(actionColumn)}
+        rows={services}
+        columns={ServicesColumns.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection
@@ -95,14 +94,14 @@ const DatatableProducts = () => {
                     {activeModal.name === "Warning Close Session" && (
                         <WarningCloseSession />
                     )}
-                        {activeModal.name === "Add Product" && (
-                        <AddProduct  data={itemData}/>
+                        {activeModal.name === "Add Services" && (
+                        <AddServices  data={itemData}/>
                     )}
-                        {activeModal.name === "Update Product" && (
-                        <UpdateProduct  data={itemData}/>
+                        {activeModal.name === "Update Services" && (
+                        <UpdateServices  data={itemData}/>
                     )}
-                        {activeModal.name === "Delete Product" && (
-                        <DeleteProduct  data={itemData}/>
+                        {activeModal.name === "Delete Services" && (
+                        <DeleteServices  data={itemData}/>
                     )}
                 </Modal>
             )}
@@ -112,4 +111,4 @@ const DatatableProducts = () => {
   );
 };
 
-export default DatatableProducts;
+export default DatatableServices;

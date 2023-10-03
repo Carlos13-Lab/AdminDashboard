@@ -57,10 +57,13 @@ const Sidebar = () => {
             <CreditCardIcon className="icon" />
             <span>Ventas</span>
           </li>
-          <li>
+          <Link to="/services" style={{ textDecoration: "none" }}>   
+            <li>
             <LocalShippingIcon className="icon" />
             <span>Servicios</span>
           </li>
+          </Link>
+      
           <p className="title">USEFUL</p>
           <li>
             <InsertChartIcon className="icon" />

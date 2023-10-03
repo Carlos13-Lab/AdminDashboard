@@ -4,6 +4,7 @@ import { hideModal, updateUser } from "../../redux/actions";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import "../../style/addUsers.css";
+import Swal from "sweetalert2";
 
 const UpdateUser = ({ data }) => {
   const dispatch = useDispatch();
@@ -57,6 +58,11 @@ const UpdateUser = ({ data }) => {
     dispatch(updateUser(data, id,))
       .then(() => dispatch(hideModal()))
       .then(() => console.log("actualizado"))
+        Swal.fire(
+        'Listooo tu usuario esta actualizado!',
+        'Pulsa el boton para terminar el proceso!',
+        'Terminar',
+        )
       .catch((error) => console.log(error));
   };
 

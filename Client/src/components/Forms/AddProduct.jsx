@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { hideModal, AddProduct  } from "../../redux/actions";
 import "../../style/addUsers.css";
 import { Fragment } from "react";
+import Swal from "sweetalert2";
 
 
 
@@ -57,6 +58,11 @@ const _handleSubmit = async (e, data) => {
         const serviceIds = selectedServices.map(service => service.id);
         await dispatch(AddProduct(serviceIds, data));
         dispatch(hideModal());
+            Swal.fire(
+        'Listooo tu producto esta agregado!!',
+        'Pulsa el boton para terminar el proceso!',
+        'Terminar',
+        )
     } catch (error) {
         console.log(error);
     }
