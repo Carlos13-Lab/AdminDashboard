@@ -11,10 +11,12 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const AddSales = () => {
   const products = useSelector((state) => state.products);
+  const productActive = products.filter((product) => product.status === true)
   const users = useSelector((state) => state.users);
   const userClient = users.filter((user) => user.role === "client");
+  const userClientActive = userClient.filter((user) => user.active === true);
   const user = useSelector((state) => state.user);
-
+  console.log(productActive)
 
   console.log(user);
   const dispatch = useDispatch();
@@ -24,7 +26,7 @@ const AddSales = () => {
     status: true,
     Info: [],
     clientId: [], 
-    seller: [user.user.id]
+    sellerId: []
   });
 
   const cancel = (event) => {
@@ -84,9 +86,13 @@ const _handleSelect = (event) => {
 
 const _handleSubmit = async (e, data) => {
   e.preventDefault();
-  data = sale
+  data = {
+    ...sale,
+    sellerId: [...sale.sellerId, user.user.id] // Add user.user.id to the seller array
+  };
+  console.log(data.sellerId)
   try {
-    await dispatch(addSale(data)); // Pasar 'sale' en lugar de 'data'
+    await dispatch(addSale(data));
     dispatch(hideModal());
     Swal.fire(
       '¡Listo! ¡Tu venta ha sido agregada!',
@@ -132,8 +138,8 @@ const _handleSubmit = async (e, data) => {
         <span>
           <strong>Productos :</strong>{" "}
         </span>
-        {products
-          ? products.map((product) => {
+        {productActive
+          ? productActive.map((product) => {
               return (
                 <Fragment key={product.id}>
                   <label htmlFor={product.email}>
@@ -155,8 +161,8 @@ const _handleSubmit = async (e, data) => {
         <span>
           <strong>Clientes :</strong>{" "}
         </span>
-        {userClient
-          ? userClient.map((user) => {
+        {userClientActive
+          ? userClientActive.map((user) => {
               return (
                 <Fragment key={user.id}>
                   <label htmlFor={user.userName}>

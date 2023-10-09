@@ -9,7 +9,7 @@ import Modal from "../Modal/Modal";
 import WarningCloseSession from "../Forms/WarningCloseSession"
 import AddSale from "../Forms/Addsale"
 import UpdateSale from "../Forms/UpdateServices"
-import DeleteSale from "../Forms/DeleteServices"
+import DeleteSale from "../Forms/DeleteSale"
 
 
 const DatatableSale = () => {
@@ -27,10 +27,9 @@ const filteredSale = saleArray.filter((item) => item.sellerId.id === userSeller.
         dispatch(showModal("Add Sale"));
         setItemData({ token });
     }; 
-        const handleModalDelete = (id,params) => {
+        const handleModalDelete = (id) => {
         dispatch(showModal("Delete Sale"));
         setItemData({
-            params,
             id
         });
     };
@@ -65,7 +64,7 @@ const filteredSale = saleArray.filter((item) => item.sellerId.id === userSeller.
             </Link>
             <div
               className="deleteButton"
-              onClick={() => handleModalDelete(params.id, params)}
+              onClick={() => handleModalDelete(params.id)}
             >
               Delete
             </div>

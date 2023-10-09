@@ -280,6 +280,20 @@ export const addSale = (data) => async (dispatch) => {
     }
 };
 
+
+export function deleteSale(id) {
+    return async function (dispatch) {
+
+        await axios.delete('/sale/delete/' + id);
+        var json = await axios.get('/sale');
+        console.log(json.data.data.sale);
+        return dispatch({
+            type: 'GET_USERS',
+            payload: json.data.data.sale,
+        });
+    };
+}
+
 //============================
 //        MODAL
 //============================
