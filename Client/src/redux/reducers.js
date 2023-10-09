@@ -18,6 +18,10 @@ const localService = window.localStorage.getItem('services')
     ? JSON.parse(window.localStorage.getItem('services'))
     : undefined;
 
+const localSales = window.localStorage.getItem('sales')
+    ? JSON.parse(window.localStorage.getItem('sales'))
+    : undefined;
+
 
 const initialState = {
     users: [],
@@ -28,6 +32,7 @@ const initialState = {
     profiles: [],
     services: localservice ? localservice : {},
     modal: { name: '', active: false },
+    sales: localSales ? localSales : {},
     usersTotal: '',
     productsTotal: ''
 };
@@ -77,84 +82,17 @@ function rootReducer(state = initialState, action) {
                 ...state,
                 products: action.payload,
             };
-        case 'DELETE_EVENT':
-            return {
-                ...state,
-                events: state.events.filter(
-                    (event) => event.id !== action.payload.id
-                ),
-            };
-        case 'UPDATE_EVENT':
-            return {
-                ...state,
-                events: state.events.map((event) =>
-                    event.id === action.payload.id ? action.payload : event
-                ),
-            };
-        case 'POST_EVENT':
-            return {
-                ...state,
-                events: [...state.events, action.payload],
-            };
         //SERVICES
         case 'GET_SERVICES':
             return {
                 ...state,
                 services: action.payload,
             };
-        case 'GET_GRADE':
+        //Sale
+        case 'GET_SALES':
             return {
                 ...state,
-                grades: action.payload,
-            };
-        case 'DELETE_GRADE':
-            return {
-                ...state,
-                grades: state.grades.filter(
-                    (grade) => grade.id !== action.payload.id
-                ),
-            };
-        case 'UPDATE_GRADE':
-            return {
-                ...state,
-                grades: state.grades.map((grade) =>
-                    grade.id === action.payload.id ? action.payload : grade
-                ),
-            };
-        case 'POST_GRADE':
-            return {
-                ...state,
-                grades: [...state.grades, action.payload],
-            };
-        //Courses
-        case 'GET_USER_COURSES':
-            return {
-                ...state,
-                courses: action.payload,
-            };
-
-        case 'GET_COURSE_ID':
-            return {
-                ...state,
-                course: action.payload,
-            };
-        case 'GET_COURSE':
-            return {
-                ...state,
-                course: action.payload,
-            };
-
-        case 'GET_COURSES_ALL':
-            return {
-                ...state,
-                courses: action.payload,
-            };
-
-        //Notifications
-        case 'GET_NOTIFICATIONS':
-            return {
-                ...state,
-                notifications: action.payload,
+                sales: action.payload,
             };
 
         // Profile

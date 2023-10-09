@@ -8,7 +8,6 @@ import Swal from "sweetalert2";
 
 
 const AddService = () => {  
-    const services = useSelector((state) => state.services);
     const dispatch = useDispatch();
     const [service, setservice] = useState({
         name: '',

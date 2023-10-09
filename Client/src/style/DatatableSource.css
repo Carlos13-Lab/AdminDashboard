@@ -17,6 +17,27 @@
   display: flex;
   align-items: center;
 }
+.cellButtonPassword {
+  display: flex;
+    border: none;
+    cursor: pointer;
+}
+
+.passwordField {
+  display: flex;
+  align-items: center; /* Centrar verticalmente los elementos */
+  
+}
+
+.cellImgPassword {
+    width: 20px;
+  height: 20px;
+  margin-right: 5px;
+    margin-left: 10px; /* Espacio entre los botones */
+}
+.containerButton {
+  display: flex;
+}
 
 .activeGreen {
   color: green;
@@ -28,8 +49,7 @@
 
 .passwordContainer {
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  align-items: center; /* Centrar verticalmente los elementos */
 }
 .productContainer {
     max-height: 30px;

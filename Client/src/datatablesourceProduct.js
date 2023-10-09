@@ -7,7 +7,6 @@ export const productsColumns = [
     field: "email",
     headerName: "Email",
     width: 230,renderCell: (params) => {
-      console.log(params)
       return (
         <div className="cellWithImg">
           <img className="cellImg" src='https://cdn-icons-png.flaticon.com/512/4129/4129437.png' alt="avatar" />
@@ -28,7 +27,6 @@ export const productsColumns = [
         setShowPassword(!showPassword);
       };
 
-      console.log(params);
       return (
         <div className="cellWithImg">
           <img
@@ -37,21 +35,24 @@ export const productsColumns = [
             alt="password"
           />
           <div className="passwordContainer">
-            {showPassword ? (
-              <div>
-                <div>{params.row.password}</div>
-                <button onClick={handleClick}>Ocultar</button>
-              </div>
-            ) : (
-              <div>
-                <div>
-                  {params.row.password.replace(/./g, "*")} {/* Replacing each character with asterisks */}
+            <div className="passwordField">
+              {showPassword ? (
+                <div className="containerButton">
+                  <div>{params.row.password}</div>
+                  <button className="cellButtonPassword" onClick={handleClick}><img src="https://cdn-icons-png.flaticon.com/128/565/565655.png" alt="" className="cellImgPassword" /></button>
                 </div>
-                <button onClick={handleClick}>Mostrar</button>
-              </div>
-            )}
+              ) : (
+                <div className="containerButton">
+                  <div>
+                      ************
+                  </div>
+                  <button className="cellButtonPassword" onClick={handleClick}><img src="https://cdn-icons-png.flaticon.com/128/159/159604.png" alt="" className="cellImgPassword" /></button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
+
       );
     },
   },

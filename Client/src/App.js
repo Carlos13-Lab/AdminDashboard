@@ -1,17 +1,17 @@
+import "./style/dark.css";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import List from "./pages/list/List";
 import ListProducts from "./pages/list/ListProducts";
 import ListProfiles from "./pages/list/ListProfiles";
+import ListServices from "./pages/list/ListServices";
+import ListSale from "./pages/list/ListSale"
 import Single from "./pages/single/Single";
-import New from "./pages/new/New";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { productInputs, userInputs } from "./formSource";
-import "./style/dark.css";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
-import { useDispatch, useSelector } from "react-redux";
-import ListServices from "./pages/list/ListServices";
+import { useSelector } from "react-redux";
+
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -44,6 +44,10 @@ function App() {
             </Route>
             <Route path="services">
               <Route index element={<ListServices />} />
+              <Route path=":productId" element={<Single />} />
+            </Route>
+            <Route path="sale">
+              <Route index element={<ListSale />} />
               <Route path=":productId" element={<Single />} />
             </Route>
           </Route>

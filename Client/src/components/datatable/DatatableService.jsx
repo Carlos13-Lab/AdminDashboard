@@ -52,10 +52,6 @@ const DatatableServices = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link handleModalPost>
-              <div className="viewButton">View</div>
-
-            </Link>
             <div
               className="deleteButton"
               onClick={() => handleModalDelete(params.id, params)}

@@ -180,7 +180,6 @@ export function updateService(id, data) {
 export function getProducttotal() {
     return async function (dispatch) {
         var json = await axios.get('/product');
-        console.log(json.data.data.total)
         return dispatch({
             type: 'GET_PRODUCTS_TOTAL',
             payload: json.data.data.total,
@@ -202,18 +201,6 @@ export function getProductById(id) {
         });
     };
 }
-export function getCourseById(id) {
-    return async function (dispacht) {
-        let course = await axios.get(`/course/${id}`);
-        course = course.data.data.course;
-
-        return dispacht({
-            type: 'GET_COURSE_ID',
-            payload: course,
-        });
-    };
-}
-
 export function getProducts() {
     return async function (dispatch) {
         var json = await axios.get('/product/');
@@ -264,211 +251,34 @@ export function AddProduct(id, data ) {
     };
 }
 //============================ 
-//       NOTIFICATIONS
+//       Sale
 //============================
 
-export function getNotifications() {
+export function getSales() {
     return async function (dispatch) {
-        var json = await axios.get('/notification');
+        var json = await axios.get('/sale');
         return dispatch({
-            type: 'GET_NOTIFICATIONS',
-            payload: json.data.data.notification,
+            type: 'GET_SALES',
+            payload: json.data.data.sale
         });
     };
 }
 
-export function deleteNotification(id, token) {
-    return async function (dispacht) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-        };
-        await axios.delete(`/notification/${id}`, config);
-        var json = await axios.get('/notification');
-        return dispacht({
-            type: 'GET_NOTIFICATIONS',
-            payload: json.data.data.notification,
+
+export const addSale = (data) => async (dispatch) => {
+    try {
+        console.log(data)
+        await axios.post('/sale/createSale', data);
+        const response = await axios.get('/sale');
+        console.log(response.data.data.sale)
+        dispatch({
+            type: 'GET_SALES',
+            payload: response.data.data.sale,
         });
-    };
-}
-
-export function addNotification(data, token) {
-    return async function (dispacht) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-        };
-
-        await axios.post(`/notification`, data, config);
-        var json = await axios.get('/notification');
-        return dispacht({
-            type: 'GET_NOTIFICATIONS',
-            payload: json.data.data.notification,
-        });
-    };
-}
-
-export function updateNotification(data, id, token) {
-    return async function (dispacht) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-        };
-
-        await axios.put(`/notification/${id}`, data, config);
-        var json = await axios.get('/notification');
-        return dispacht({
-            type: 'GET_NOTIFICATIONS',
-            payload: json.data.data.notification,
-        });
-    };
-}
-//============================
-//       LESSONS
-//============================
-
-export function addLesson(course_id, data, token) {
-    return async function (dispacht) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-        };
-
-        await axios.post(`/lesson/${course_id}`, data, config);
-        let course = await axios.get(`/course/${course_id}`);
-        course = course.data.data.course;
-
-        return dispacht({
-            type: 'GET_COURSE_ID',
-            payload: course,
-        });
-    };
-}
-
-export function updateLesson(data, course_id, token) {
-    return async function (dispacht) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-        };
-
-        await axios.put(`/lesson/${course_id}`, data, config);
-        let course = await axios.get(`/course/${course_id}`);
-        course = course.data.data.course;
-
-        return dispacht({
-            type: 'GET_COURSE_ID',
-            payload: course,
-        });
-    };
-}
-
-export function deleteLesson(index, course_id, token) {
-    return async function (dispacht) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-            data: {
-                index: index,
-            },
-        };
-
-        await axios.delete(`/lesson/${course_id}`, config);
-
-        let course = await axios.get(`/course/${course_id}`);
-        course = course.data.data.course;
-
-        return dispacht({
-            type: 'GET_COURSE_ID',
-            payload: course,
-        });
-    };
-}
-
-//============================
-//       EVENTS
-//============================
-
-export function getEvents(courses_id) {
-    return async function (dispatch) {
-        let events = await axios.get('/event');
-        events = events.data.data.event;
-        events = events.filter(
-            (event) =>
-                courses_id.indexOf(event.course_id._id) != -1 &&
-                event.events.length != 0
-        );
-
-        return dispatch({
-            type: 'GET_EVENTS',
-            payload: events,
-        });
-    };
-}
-
-export function deleteActivity(index, course_id, token) {
-    return async function (dispacht) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-            data: {
-                index: index,
-            },
-        };
-
-        await axios.delete(`/event/${course_id}`, config);
-        let course = await axios.get(`/course/${course_id}`);
-        course = course.data.data.course;
-
-        return dispacht({
-            type: 'GET_COURSE_ID',
-            payload: course,
-        });
-    };
-}
-export function addActivity(course_id, data, token) {
-    return async function (dispacht) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-        };
-
-        await axios.post(`/event/${course_id}`, data, config);
-        let course = await axios.get(`/course/${course_id}`);
-        course = course.data.data.course;
-
-        return dispacht({
-            type: 'GET_COURSE_ID',
-            payload: course,
-        });
-    };
-}
-export function updateActivity(course_id, data, token) {
-    return async function (dispacht) {
-        let config = {
-            headers: {
-                xtoken: token,
-            },
-        };
-
-        await axios.put(`/event/${course_id}`, data, config);
-        let course = await axios.get(`/course/${course_id}`);
-        course = course.data.data.course;
-
-        return dispacht({
-            type: 'GET_COURSE_ID',
-            payload: course,
-        });
-    };
-}
+    } catch (error) {
+        console.error('Error adding sale:', error);
+    }
+};
 
 //============================
 //        MODAL

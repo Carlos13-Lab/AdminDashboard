@@ -53,7 +53,6 @@ const Datatable = () => {
       field: "Acción",
       width: 200,
       renderCell: (params) => {
-        console.log(params.rows)
         return (
           
           <div className="cellAction">
