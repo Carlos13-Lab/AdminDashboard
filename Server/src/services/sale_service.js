@@ -79,5 +79,4 @@ module.exports = {
     newSale,
     findById,
     findByIdandUpdate,
-
 }
