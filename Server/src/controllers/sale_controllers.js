@@ -1,35 +1,27 @@
 const { serverError, success, error } = require('../helpers/response.js');
+const Products = require('../models/products.js');
 const Sale = require('../models/sale.js');
+const User = require('../models/user.js');
 
-const { newSale, findById, findByIdandUpdate, remove } = require('../services/sale_service.js')
-
+const { newSale, findById, findByIdandUpdate } = require('../services/sale_service.js')
 
 const saleNew = async (req, res) => {
-    let data = {};
-    const { body } = req
     try {
-        const savedSale = await newSale(body);
-        await savedSale.save()
+        const { body } = req;
+        const sale = await newSale(body);
+        await sale.save();
 
-        data = {
-            sale: savedSale,
-        };
-    } catch (error) {
-        return serverError({
+        return success({
             res,
-            message: error.message,
-            status: 500
+            message: "Sale created",
+            data: sale,
+            status: 200,
         });
+    } catch (error) {
+        console.log(error.message)
     }
+};
 
-    return success({
-        res,
-        message: "sale created",
-        data,
-        status: 200,
-    });
-
-}
 
 const saleGet = async (req, res) => {
     const { limit, from } = req.query
@@ -113,25 +105,38 @@ const updateSale = async (req, res) => {
     });
 };
 
-const SaleRemove = async (req, res) => {
-
-    const { id } = req.params;
-
-
+const saleDelete = async (req, res) => {
     try {
-        const removeSale = await remove(id);
-        if (!removeSale)
-            return error({req, res, message:'There is a problem with the post that you want to remove!!', status:400});
-        if (removeSale === "no-sale") return error({req, res, message:'There is a problem with the post that you want to remove!!', status:400});
-        return success({req, res, message:'Sale deleted', data:removeSale, status:200});
-    } catch (error) {
-        if (error.message === 'no-privileges') {
-            return error({req, res, message:'Unauthorized User', status:401});
-        }
+        const { id } = req.params;
 
-        return error({req, res, message:'Sale not found',status:500});
+        const sale = await Sale.findById(id);
+        let sale__Past;
+        const userSeller = await User.findById(sale.sellerId);
+        const userClient = await User.findById(sale.clientId);
+        const ProductInfo = await Products.findById(sale.Info);
+        if (userSeller.sale.includes(sale.id)) {
+            userSeller.sale = userSeller.sale.filter(saleId => saleId.toString() !== sale.id.toString());
+        }
+        if(userClient.product.includes(sale.Info)) {
+            userClient.product = userClient.product.filter(InfoId => InfoId.toString() !== ProductInfo.id.toString())
+        }
+        ProductInfo.status = true;
+        userClient.active = true;
+
+        await Promise.all([userClient.save(),userSeller.save(), ProductInfo.save()]);
+
+        sale__Past = await Sale.findByIdAndDelete(sale.id) 
+        return res.status(201).json({
+            message: "Sale deleted successfully",
+            data: sale__Past,
+        });
+    } catch (error) {
+        console.error(`Error in saleDelete: ${error}`);
+        return res.status(500).json({ message: 'Error deleting the sale' });
     }
 };
+
+
 
 
 
@@ -141,5 +146,5 @@ module.exports = {
     saleGet,
     saleGetById,
     updateSale,
-    SaleRemove
+    saleDelete
 };

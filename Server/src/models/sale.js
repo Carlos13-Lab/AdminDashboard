@@ -21,7 +21,6 @@ const sale_Schema = new Schema({
   ],
   saleDate: {
     type: String,
-
   },
   status: {
     type: Boolean,
@@ -32,6 +31,13 @@ const sale_Schema = new Schema({
   }
 });
 
-const Sale = model("sale", sale_Schema);
+sale_Schema.methods.toJSON = function idSetter() {
+  const { _id, ...sale} = this.toObject();
+  sale.id = _id;
+  return sale;
+};
 
+
+
+const Sale = model("sale", sale_Schema);
 module.exports = Sale;

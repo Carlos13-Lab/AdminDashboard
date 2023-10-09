@@ -32,10 +32,24 @@ const findByIdSeller = async (id) => {
 
 const findByEmail = async (email) => {
   const user = await User.findOne({ email }, 
-    ["userName", "email", "phone_Number", "role", "active"])
+    ["userName", "email", "phone_Number", "role", "active",])
     .populate({
     path: "sale",
-    select: "saleDate",
+      select: "saleDate", 
+      populate: [
+        {
+          path: 'clientId',
+          select: 'userName email role'
+        },
+        {
+          path: 'Info',
+          select: 'email',
+          populate: {
+            path: 'service',
+            select: 'name'
+          }
+        },
+      ]
   })
 
   return user;

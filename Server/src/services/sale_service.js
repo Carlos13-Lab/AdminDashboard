@@ -12,37 +12,47 @@ const findById = async (id) => {
 };
 
 const newSale = async (body) => {
-    const { status, saleDate, clientId, Info, sellerId } = body;
+    try {
+        const { status, saleDate, clientId, Info, sellerId, price } = body;
 
-    const sale = new Sale({
-        status,
-        saleDate,
-        Info: [Info],
-        clientId: [clientId],
-        sellerId: [sellerId],
-    });
+        const sale = new Sale({
+            status,
+            saleDate,
+            Info: [Info],
+            clientId: [clientId],
+            sellerId: [sellerId],
+            price
+        });
 
-    const productUpdateResult = await Products.updateMany(
-        
-       
-        { id: Info },
-        { $set: { status: false } }
-    );
-    console.log('Sale updated:', productUpdateResult);
-    console.log(productUpdateResult.id)
-    const userSeller = await User.findById(sellerId);
-    const userClient = await User.findById(clientId);
+        const [userSeller, userClient, info] = await Promise.all([
+            User.findById(sellerId),
+            User.findById(clientId),
+            Products.findById(Info)
+        ]);
 
-    sale.save();
-    userSeller.sale.push(sale._id);
-    userClient.product.push(Info);
+        userClient.active = false;
+        info.status = false;
 
-    await Promise.all([userSeller.save(), userClient.save()]);
+        await Promise.all([info.save(), sale.save()]);
+        console.log(userSeller.sale);
 
-    const savedSale = await Sale.findById(sale._id);
+        userSeller.sale.push(sale.id);
 
-    return savedSale;
+        userClient.product.push(Info);
+
+        await Promise.all([userSeller.save(), userClient.save()]);
+        console.log(sale);
+
+        console.log(sale.id)
+        const savedSale = await Sale.findById(sale.id);
+
+        return savedSale;
+    } catch (error) {
+        console.error(`Error in newSale: ${error.message}`);
+        throw new Error('Error creating new sale');
+    }
 };
+
 
 
 const findByIdandUpdate = async ({ id, body }) => {
@@ -65,27 +75,9 @@ const findByIdandUpdate = async ({ id, body }) => {
     return data;
 };
 
-const remove = async (id) => {
-
-    const sale = await Sale.findById(id);
-
-    if (!sale) return "no-sale"
-
-    if (sale) {
-        //PROBAR SI FUNCIONA !!!
-        await User.deleteMany({sale: sale.id});
-    }
-
-
-    await sale.deleteOne()
-
-
-    return sale.id
-};
-
 module.exports = {
     newSale,
     findById,
     findByIdandUpdate,
-    remove
+
 }
