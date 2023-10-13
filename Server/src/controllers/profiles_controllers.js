@@ -112,9 +112,31 @@ const updateProfiles = async (req, res) => {
     });
 };
 
+const ProfilesDelete = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const profile = await Profiles.findByIdAndDelete(id);
+
+        if (!profile) {
+            return res.status(404).json({ message: "Profile not found" });
+        }
+
+        return res.status(201).json({
+            message: "Profile deleted successfully",
+            data: profile,
+        });
+    } catch (error) {
+        console.error(`Error in ProfilesDelete: ${error}`);
+        return res.status(500).json({ message: "Error deleting a profile" });
+    }
+};
+
+
 module.exports = {
     Newprofile,
     profileGet,
     profileGetById,
-    updateProfiles
+    updateProfiles,
+    ProfilesDelete
 }

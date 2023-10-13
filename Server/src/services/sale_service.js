@@ -57,11 +57,11 @@ const newSale = async (body) => {
 
 const findByIdandUpdate = async ({ id, body }) => {
     const {
-        status, saleDate, clientId, Info, sellerId
+        status, saleDate,  price
     } = body;
 
     const options = {
-        status, saleDate, clientId, Info, sellerId
+        status, saleDate,  price
     };
 
     const updatedSale = await Sale.findByIdAndUpdate(

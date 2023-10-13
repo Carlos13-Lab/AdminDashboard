@@ -1,42 +1,43 @@
-require("dotenv").config();
-require("./database/config");
-const {
-    auth,
-    service,
-    product,
-    profile,
-    user,
-    sale
-} = require('./routes/routes');
+require('dotenv').config();
+const {auth, service, product, profile, user, sale} = require('./routes/routes')
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const Database = require('./database/config'); 
 
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+class Server {
+  constructor() {
+    this.server = express();
+    this.port = process.env.PORT || 3001;
+    this.database = new Database();
 
-const server = express();
-let port = process.env.PORT || 3001
+    this.server.use(bodyParser.urlencoded({ extended: false }));
+    this.server.use(bodyParser.json());
+    this.server.use(
+      cors({
+        exposedHeaders: '*',
+        allowedHeaders: '*',
+      })
+    );
 
-// Convierte una petición recibida (POST-GET...) a objeto JSON
-server.use(bodyParser.urlencoded({ extended: false }));
-server.use(bodyParser.json());
-server.use(
-  cors({
-    exposedHeaders: "*",
-    allowedHeaders: "*",
-  })
-);
-server.get("/", (req, res) => {
-  res.status(200).json({ message: "Connect" })
-})
-server.use('/api/demo/auth', auth);
-server.use('/api/demo/service', service);
-server.use('/api/demo/product', product);
-server.use('/api/demo/profile', profile);
-server.use('/api/demo/user', user);
-server.use('/api/demo/sale', sale);
+    this.server.get('/', (req, res) => {
+      res.status(200).json({ message: 'Connect' });
+    });
 
+    this.server.use('/api/demo/auth', auth);
+    this.server.use('/api/demo/service', service);
+    this.server.use('/api/demo/product', product);
+    this.server.use('/api/demo/profile', profile);
+    this.server.use('/api/demo/user', user);
+    this.server.use('/api/demo/sale', sale);
+  }
 
+  start() {
+    this.server.listen(this.port, () => {
+      console.log(`Server running at http://localhost:${this.port}`);
+    });
+  }
+}
 
-server.listen(port, function () {
-  console.log(`Server running in http://localhost:${port}`);
-});
+const server = new Server();
+server.start();
