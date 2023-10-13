@@ -22,7 +22,6 @@ const UpdateUser = ({ data }) => {
     active: true,
     product: product
   });
-  console.log(products);
 
   const cancel = (event) => {
     event.preventDefault();
@@ -55,7 +54,7 @@ const UpdateUser = ({ data }) => {
 
   const handleSubmit = (e, data) => {
     e.preventDefault();
-    dispatch(updateUser(data, id,))
+    dispatch(updateUser(data, id))
       .then(() => dispatch(hideModal()))
       .then(() => console.log("actualizado"))
         Swal.fire(

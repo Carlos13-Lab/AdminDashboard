@@ -1,24 +1,47 @@
 import "./datatable.css";
 import { DataGrid } from "@mui/x-data-grid";
-import { productsColumns } from "../../datatablesourceProduct";
-import { Link } from "react-router-dom";
+import { profilesColumns } from "../../datatablesourceProfiles";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getProducts,getProfiles } from "../../redux/actions";
+import { getProducts,getProfiles, showModal } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../Modal/Modal";
 import WarningCloseSession from "../Forms/WarningCloseSession"
-
+import AddProfiles from "../Forms/AddProfiles";
+import UpdateProfiles from "../Forms/UpdateProfiles";
+import DeleteProfiles from "../Forms/DeleteProfiles";
 
 
 const DatatableProfiles = () => {
-  const profiles = useSelector((state) => state.profiles );
+  const { id } = useParams();
+  const profiles = useSelector((state) => state.profiles);
+  const profilesArray = Object.values(profiles);
+  const filteredProfiles = profilesArray.filter(item => item.product[0]._id === id);
   const activeModal = useSelector((state) => state.modal);
+  const [itemData, setItemData] = useState({});
   const dispatch = useDispatch()
-  
-  
-  const handleDelete = (id) => {
 
-  };
+
+
+        const handleModalPost = () => {
+        dispatch(showModal("Add Profiles"));
+        setItemData();
+    }; 
+        const handleModalDelete = (id) => {
+        dispatch(showModal("Delete Profiles"));
+        setItemData({
+        
+            id
+        });
+    };
+
+            const handleModalUpdate = (params, id) => {
+        dispatch(showModal("Update Profiles"));
+        setItemData({
+            params,
+            id
+        });
+    };
       useEffect(() => {
         dispatch(getProducts()).catch((error) => console.log(error))
         dispatch(getProfiles()).catch((error) => console.log(error))
@@ -33,18 +56,17 @@ const DatatableProfiles = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/users/test" style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
-            </Link>
             <div
               className="deleteButton"
+               onClick={() => handleModalDelete(params.id,params)}
             >
               Delete
             </div>
-                        <div
-              className="viewButton"
+            <div
+              className="updateButton"
+               onClick={() => handleModalUpdate(params.id,params)}
             >
-             Profiles
+             Update
             </div>
           </div>
         );
@@ -54,23 +76,32 @@ const DatatableProfiles = () => {
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Lista de Productos
-        <Link to="/users/new" className="link">
-          Agregar Producto
+        Lista de Perfiles
+        <Link className="link"  onClick={() => handleModalPost()}>
+          Agregar Perfil
         </Link>
       </div>
       <DataGrid
         className="datagrid"
-        rows={profiles}
-        columns={productsColumns.concat(actionColumn)}
+        rows={filteredProfiles}
+        columns={profilesColumns.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection
       />
             {activeModal.active && (
-                <Modal>
+                  <Modal>
                     {activeModal.name === "Warning Close Session" && (
                         <WarningCloseSession />
+                    )}
+                        {activeModal.name === "Add Profiles" && (
+                        <AddProfiles  data={itemData}/>
+                    )}
+                        {activeModal.name === "Update Profiles" && (
+                        <UpdateProfiles  data={itemData}/>
+                    )}
+                             {activeModal.name === "Delete Profiles" && (
+                        <DeleteProfiles  data={itemData}/>
                     )}
                 </Modal>
             )}

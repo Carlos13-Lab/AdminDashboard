@@ -30,7 +30,6 @@ const [service, setService] = useState({
 const _handleSubmit = async (e, data ) => {
     e.preventDefault();
     try {
-
         await dispatch(updateService( id.id, data));
         dispatch(hideModal());
         Swal.fire(

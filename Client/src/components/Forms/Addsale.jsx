@@ -155,7 +155,7 @@ const _handleSubmit = async (e, data) => {
                 </Fragment>
               );
             })
-          : ""}
+          : <div>No hay productos activos</div>}
       </div>
       <div className="addUsers-input">
         <span>
@@ -178,7 +178,7 @@ const _handleSubmit = async (e, data) => {
                 </Fragment>
               );
             })
-          : ""}
+          :<div>No hay usuarios activos</div>}
       </div>
 
       <button className="addUsers-button" type="submit">

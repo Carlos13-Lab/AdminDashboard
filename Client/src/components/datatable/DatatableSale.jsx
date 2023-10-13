@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Modal from "../Modal/Modal";
 import WarningCloseSession from "../Forms/WarningCloseSession"
 import AddSale from "../Forms/Addsale"
-import UpdateSale from "../Forms/UpdateServices"
+import UpdateSale from "../Forms/UpdateSale"
 import DeleteSale from "../Forms/DeleteSale"
 
 
@@ -17,7 +17,7 @@ const sale = useSelector((state) => state.sales);
 const userSeller = useSelector((state) => state.user.user);
 const saleArray = Object.values(sale);
 const filteredSale = saleArray.filter((item) => item.sellerId.id === userSeller._id);
-
+console.log(sale)
 
   const activeModal = useSelector((state) => state.modal);
   const [itemData, setItemData] = useState({});
@@ -58,10 +58,6 @@ const filteredSale = saleArray.filter((item) => item.sellerId.id === userSeller.
     
         return (
           <div className="cellAction">
-            <Link >
-              <div className="viewButton">View</div>
-
-            </Link>
             <div
               className="deleteButton"
               onClick={() => handleModalDelete(params.id)}

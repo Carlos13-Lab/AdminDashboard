@@ -35,7 +35,7 @@ const _handleSubmit = async (e, data) => {
         await dispatch(addServices(data));
         dispatch(hideModal());
             Swal.fire(
-        'Listooo tu producto esta agregado!!',
+        'Listooo tu Servicio esta agregado!!',
         'Pulsa el boton para terminar el proceso!',
         'Terminar',
         )

@@ -2,7 +2,6 @@ import { useDispatch } from "react-redux";
 import { deleteServices, hideModal } from "../../redux/actions";
 import "../Modal/modalgeneral.css"
 import '../../style/deleteUsers.css'
-import Swal from "sweetalert2";
 
 
 const DeleteServices = ({ data }) => {

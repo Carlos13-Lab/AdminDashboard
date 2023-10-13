@@ -51,7 +51,15 @@ const DatatableProducts = () => {
       width: 200,
       renderCell: (params) => {
         return (
-          <div className="cellAction">
+            <div className="cellAction">
+               
+               <div
+              className="viewButton"
+            >
+                <Link to={`profiles/${params.id}`} style={{ textDecoration: "none" }}>
+                  profiles
+                </Link>
+              </div>
             <div
               className="deleteButton"
               onClick={() => handleModalDelete(params.id, params)}
@@ -62,7 +70,7 @@ const DatatableProducts = () => {
               className="updateButton"
               onClick={() => handleModalUpdate(params.id,params)}
             >
-             update
+              update
             </div>
           </div>
         );

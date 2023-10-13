@@ -1,13 +1,14 @@
-export const productsColumns = [
+export const profilesColumns = [
   { field: "id", headerName: "ID", width: 70 },
+  
   {
-    field: "email",
-    headerName: "Email",
+    field: "Nombre",
+    headerName: "Nombre",
     width: 230,renderCell: (params) => {
       return (
         <div className="cellWithImg">
-          <img className="cellImg" src='https://cdn-icons-png.flaticon.com/512/4129/4129437.png' alt="avatar" />
-          {params.row.email}
+          <img className="cellImg" src='https://img2.freepng.es/20180320/qcw/kisspng-computer-icons-name-tag-iconfinder-clip-art-security-badge-icon-png-5ab0cc3fa64061.172177691521536063681.jpg' alt="avatar" />
+          {params.row.name}
         </div>
       );
     },
@@ -24,17 +25,19 @@ export const productsColumns = [
       );
     },
   },
-    {  field: "services",
-    headerName: "Services",
-    width: 200,
+  { field: "pin", headerName: "Clave", width: 100 },
+  { field: "number", headerName: "Cuenta", width: 100},
+    {  field: "profiles",
+    headerName: "Producto",
+    width: 250,
     renderCell: (params) => {
       return (
         <div className='productContainer'>
-          {params.row.service ? (
-            params.row.service.map((item, index) => {
+          {params.row.product ? (
+            params.row.product.map((item, index) => {
               return (
                 <div key={index} className="productItem">
-                  <div> <strong>{item.name}</strong> </div>
+                  <div> <strong>{item.email}</strong> </div>
                 </div>
               );
             })

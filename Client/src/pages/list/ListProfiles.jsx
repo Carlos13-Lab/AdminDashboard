@@ -9,7 +9,7 @@ const ListProduct = () => {
       <Sidebar/>
       <div className="listContainer">
         <Navbar/>
-        <Datatable/>
+        <Datatable />
       </div>
     </div>
   )

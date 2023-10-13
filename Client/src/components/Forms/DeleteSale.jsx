@@ -7,7 +7,6 @@ import Swal from "sweetalert2";
 
 const DeleteSale = ({ data }) => {
     const { id  } = data;
-    console.log(id)
     const dispatch = useDispatch();
 
     const handleSubmit = (e, id) => {
@@ -16,7 +15,7 @@ const DeleteSale = ({ data }) => {
             .then(() => dispatch(hideModal()))
             .catch((error) => console.log(error));
                     Swal.fire(
-        'Listooo tu Usuario a sido eliminado!',
+        'Listooo!! tu Venta a sido eliminado!',
         'Pulsa el boton para terminar el proceso!',
         'Terminar',
         )
@@ -26,18 +25,17 @@ const DeleteSale = ({ data }) => {
             <div>
                 <div>
                     <p className="warningMargin">
-                        <strong>¿Querés eliminar este usuario?</strong>
+                        <strong>¿Querés eliminar esta venta?</strong>
                     </p>
                     <p className="pSoftColorWarning">
-                        Estás por eliminar 
-                        de forma permanente y ya no tendrá acceso a la
-                        plataforma
+                        Estás por eliminar esta venta
+                        de forma permanente!!
                     </p>
                 </div>
                 <form onSubmit={(e) => handleSubmit(e, id)}>
                     <button className="btn_primary mt-2">
                         {" "}
-                        <strong>Eliminar Usuario</strong>
+                        <strong>Eliminar Venta</strong>
                     </button>
                     <button
                         onClick={() => dispatch(hideModal())}

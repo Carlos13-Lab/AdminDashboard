@@ -36,11 +36,7 @@ function App() {
             </Route>
             <Route path="products">
               <Route index element={<ListProducts />} />
-              <Route path=":productId" element={<Single />} />
-            </Route>
-            <Route path="profiles">
-              <Route index element={<ListProfiles />} />
-              <Route path=":productId" element={<Single />} />
+              <Route path=":profiles/:id" element={<ListProfiles /> } />
             </Route>
             <Route path="services">
               <Route index element={<ListServices />} />

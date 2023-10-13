@@ -1,22 +1,21 @@
 import { useDispatch } from "react-redux";
-import { deleteProduct, hideModal } from "../../redux/actions";
+import { deleteProfile, hideModal } from "../../redux/actions";
 import "../Modal/modalgeneral.css"
 import '../../style/deleteUsers.css'
 import Swal from "sweetalert2";
 
 
-const DeleteProduct = ({ data }) => {
-    const { id, params } = data;
-
+const DeleteProfiles = ({ data }) => {
+    const { id  } = data;
     const dispatch = useDispatch();
 
     const handleSubmit = (e, id) => {
         e.preventDefault();
-        dispatch(deleteProduct(id))
+        dispatch(deleteProfile(id))
             .then(() => dispatch(hideModal()))
             .catch((error) => console.log(error));
                     Swal.fire(
-        'Listooo tu Producto a sido eliminado!',
+        'Listooo!! tu Perfil a sido eliminado!',
         'Pulsa el boton para terminar el proceso!',
         'Terminar',
         )
@@ -26,17 +25,17 @@ const DeleteProduct = ({ data }) => {
             <div>
                 <div>
                     <p className="warningMargin">
-                        <strong>¿Querés eliminar este Producto?</strong>
+                        <strong>¿Querés eliminar este Perfil?</strong>
                     </p>
                     <p className="pSoftColorWarning">
-                        Estás por eliminar este producto <span>{`${params.row.email}`}</span>{" "}
-                        de forma permanente.
+                        Estás por eliminar este Perfil
+                        de forma permanente!!
                     </p>
                 </div>
                 <form onSubmit={(e) => handleSubmit(e, id)}>
                     <button className="btn_primary mt-2">
                         {" "}
-                        <strong>Eliminar Producto</strong>
+                        <strong>Eliminar Perfil</strong>
                     </button>
                     <button
                         onClick={() => dispatch(hideModal())}
@@ -51,4 +50,4 @@ const DeleteProduct = ({ data }) => {
     );
 };
 
-export default DeleteProduct;
+export default DeleteProfiles;
