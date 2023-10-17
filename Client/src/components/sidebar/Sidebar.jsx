@@ -13,35 +13,51 @@ import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link } from "react-router-dom";
 import { showModal } from "../../redux/actions";
-import { useDispatch} from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 
 const Sidebar = () => {
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.user.user)
 
   const handleWarnings = (event) => {
         event.preventDefault();
         dispatch(showModal("Warning Close Session"));
     };
-
+    console.log(user)
   return (
     <div className="sidebar">
-      <div className="top">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">Admin</span>
-        </Link>
-      </div>
+
+{user ? (user.role === "seller" ? (
+  <div className="top">
+    <Link to="/" style={{ textDecoration: "none" }}>
+      <span className="logo">Seller</span>
+    </Link>
+  </div>
+) : (
+  <div className="top">
+    <Link to="/admin" style={{ textDecoration: "none" }}>
+      <span className="logo">Admin</span>
+    </Link>
+  </div>
+)) : null}
+
+   
       <hr />
       <div className="center">
         <ul>
-          <p className="title">MAIN</p> 
-          <Link to="/" style={{ textDecoration: "none" }}>
-          <li>
-            <DashboardIcon className="icon" />
-            <span>Dashboard</span>
-          </li>
-          </Link>
+      
+          
+                <p className="title">MAIN</p>
+                <Link to="/admin" style={{ textDecoration: "none" }}>
+                  <li>
+                    <DashboardIcon className="icon" />
+                    <span>Dashboard</span>
+                  </li>
+                </Link>
+          
+        
           <p className="title">LISTS</p>
-          <Link to="/users" style={{ textDecoration: "none" }}>
+          <Link to="/" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
               <span>Usuarios</span>

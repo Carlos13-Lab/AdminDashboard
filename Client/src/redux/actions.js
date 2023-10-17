@@ -74,6 +74,7 @@ export const getProfiles = () => async (dispatch) => {
 };
 
 export const AddProfile = ( id, data ) => async (dispatch) => {
+    console.log(id, data)
     await axios.post(`/profile/createprofile/${id}`, data);
     const json = await axios.get(`/profile/`);
     dispatch({

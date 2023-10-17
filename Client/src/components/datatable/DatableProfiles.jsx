@@ -16,11 +16,12 @@ const DatatableProfiles = () => {
   const { id } = useParams();
   const profiles = useSelector((state) => state.profiles);
   const profilesArray = Object.values(profiles);
-  const filteredProfiles = profilesArray.filter(item => item.product[0]._id === id);
+  const filteredProfiles = profilesArray.filter(item => item.product[0]._id === id) 
   const activeModal = useSelector((state) => state.modal);
   const [itemData, setItemData] = useState({});
   const dispatch = useDispatch()
-
+  console.log(filteredProfiles)
+  console.log(profiles)
 
 
         const handleModalPost = () => {
