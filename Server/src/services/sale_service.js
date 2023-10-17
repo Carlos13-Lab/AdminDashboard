@@ -30,7 +30,6 @@ const newSale = async (body) => {
             Products.findById(Info)
         ]);
 
-        userClient.active = false;
         info.status = false;
 
         await Promise.all([info.save(), sale.save()]);
@@ -61,7 +60,7 @@ const findByIdandUpdate = async ({ id, body }) => {
     } = body;
 
     const options = {
-        status, saleDate,  price
+        status, saleDate, price
     };
 
     const updatedSale = await Sale.findByIdAndUpdate(
