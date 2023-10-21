@@ -1,5 +1,5 @@
 const Profiles = require("../models/profiles");
-const Products = require("../models/products");
+const { Product } = require("../models");
 
 const findByIdProfile = async (id) => {
   const profile = await Profiles.findById(id, [
@@ -25,7 +25,7 @@ const newProfile = async ({ id, body }) => {
     product: [],
   });
   await profile.save();
-  const productIdAdd = await Products.findById(id);
+  const productIdAdd = await Product.findById(id);
 
   const profileCount = await Profiles.countDocuments({
     product: productIdAdd.id,

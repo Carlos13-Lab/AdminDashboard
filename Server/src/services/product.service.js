@@ -1,10 +1,8 @@
 const ProductRepository = require("../repository/product.respository");
-const StreamingServiceService = require("./streaming-service.service");
 
 class ProductService {
   constructor() {
     this.repository = new ProductRepository();
-    this.streamingServiceService = new StreamingServiceService();
     this.findById = this.findById.bind(this);
     this.create = this.create.bind(this);
     this.update = this.update.bind(this);
@@ -22,13 +20,7 @@ class ProductService {
   }
   async create(productDto) {
     try {
-      const streamingService = await this.streamingServiceService.getById(
-        productDto.service.id
-      );
-      const product = await this.repository.create({
-        ...productDto,
-        service: streamingService,
-      });
+      const product = await this.repository.create(productDto);
       return product;
     } catch (error) {
       throw error;

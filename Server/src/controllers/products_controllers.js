@@ -1,8 +1,8 @@
 const { serverError, success , error} = require('../helpers/response.js');
-const { newProducts, findById } = require('../services/products_service.js');
+const { newProducts, findById } = require('../services/product.service.js');
 const Sale = require('../models/sale.js');
 const Profiles = require('../models/profiles.js');
-const Products = require('../models/products.js');
+const { Product } = require("../models");
 const User = require('../models/user.js')
 
 
@@ -36,8 +36,8 @@ const productsGet = async (req, res) => {
     const { limit, from } = req.query;
     try {
         const [total, product] = await Promise.all([
-            await Products.countDocuments(),
-            await Products.find().skip(Number(from))
+            await Product.countDocuments(),
+            await Product.find().skip(Number(from))
             .limit(Number(limit)).populate({path: 'service', select: 'name status'})
             .exec(),
         ]);
@@ -88,7 +88,7 @@ const updatedProduct = async (req, res) => {
         const { id } = req.params;
         const { service, ...rest } = req.body;
 
-        const productPast = await Products.findById(id);
+        const productPast = await Product.findById(id);
 
         // Dejar todo como estaba si no se selecciona nada
         if (!service) {
@@ -97,7 +97,7 @@ const updatedProduct = async (req, res) => {
             rest.service = service;
         }
 
-        const product = await Products.findByIdAndUpdate(id, { service: rest.service, ...rest }, { new: true });
+        const product = await Product.findByIdAndUpdate(id, { service: rest.service, ...rest }, { new: true });
 
         return res.status(200).json({ message: 'product updated', product });
     } catch (error) {
@@ -113,7 +113,7 @@ const productDelete = async (req, res) => {
         const { id } = req.params;
         console.log(id);
 
-        const product = await Products.findByIdAndDelete(id);
+        const product = await Product.findByIdAndDelete(id);
 
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });

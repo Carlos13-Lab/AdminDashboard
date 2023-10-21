@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const bcryptjs = require('bcryptjs')
 
 const User = require('../models/user.js');
-const Product = require('../models/products.js');
+const Product = require('../models');
 const Sale = require('../models/sale.js')
 
 

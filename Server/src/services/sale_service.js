@@ -1,4 +1,4 @@
-const Products = require("../models/products");
+const { Product } = require("../models");
 const Sale = require("../models/sale");
 const User = require("../models/user");
 
@@ -41,7 +41,7 @@ const newSale = async (body) => {
     const [userSeller, userClient, info] = await Promise.all([
       User.findById(sellerId),
       User.findById(clientId),
-      Products.findById(Info),
+      Product.findById(Info),
     ]);
 
     await Promise.all([info.save(), sale.save()]);
