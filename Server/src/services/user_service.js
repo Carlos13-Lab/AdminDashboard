@@ -1,4 +1,3 @@
-const { populate } = require("../models/products");
 const User = require("../models/user");
 // const { encryptPassword } = require("../helpers/crypto");
 

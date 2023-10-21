@@ -1,6 +1,6 @@
 const Router = require('express');
 
-const {UpdateUser, userGet, userGetById, UserNew, addIdProductClient, userDelete } = require('../controllers/user_controllers');
+const {UpdateUser, userGet, userGetById, UserNew, UserNewClient, userDelete } = require('../controllers/user_controllers');
 // const { validateJWT } = require('../middlewares/validateJWT');
 
 
@@ -11,7 +11,7 @@ route.put('/:id', UpdateUser)
      .get('/', userGet)
      .get('/:id', userGetById)
      .post('/', UserNew)
-     .post('/add/:id', addIdProductClient)
+     .post('/client', UserNewClient)
      .delete('/:id', userDelete)
 
 

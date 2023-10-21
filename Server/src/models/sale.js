@@ -16,11 +16,14 @@ const sale_Schema = new Schema({
   Info: [
     {
       type: Schema.Types.ObjectId,
-      ref: "products",
+      ref: "product",
     },
   ],
   saleDate: {
     type: String,
+  },
+  finishDate: {
+    type: String
   },
   status: {
     type: Boolean,
@@ -28,6 +31,9 @@ const sale_Schema = new Schema({
   price: {
     type: String,
     require: true
+  },
+  serviceId: {
+    type: String
   }
 });
 

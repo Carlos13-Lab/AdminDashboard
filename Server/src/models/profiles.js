@@ -23,7 +23,7 @@ const profiles_Schema = new Schema({
   },
   product: [{
     type: Schema.Types.ObjectId,
-    ref: 'products'
+    ref: 'product'
   }],
 });
 

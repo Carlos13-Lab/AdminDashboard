@@ -1,5 +1,5 @@
 const { serverError, success, error } = require('../helpers/response.js');
-const Products = require('../models/products.js');
+const { Product } = require("../models");
 const Sale = require('../models/sale.js');
 const User = require('../models/user.js');
 
@@ -113,7 +113,7 @@ const saleDelete = async (req, res) => {
         let sale__Past;
         const userSeller = await User.findById(sale.sellerId);
         const userClient = await User.findById(sale.clientId);
-        const ProductInfo = await Products.findById(sale.Info);
+        const ProductInfo = await Product.findById(sale.Info);
         if (userSeller.sale.includes(sale.id)) {
             userSeller.sale = userSeller.sale.filter(saleId => saleId.toString() !== sale.id.toString());
         }

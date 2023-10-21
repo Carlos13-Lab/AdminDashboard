@@ -8,17 +8,14 @@ const user_Schema = new Schema({
   },
   email: {
     type: String,
-    required: true,
-    unique: true,
   },
   password: {
     type: String,
-    required: true
   },
   phone_Number: {
     type: Number,
     required: true,
-    unique: true,
+
   },
   active: {
     type: Boolean,
@@ -27,7 +24,7 @@ const user_Schema = new Schema({
   product: [
     {
       type: Schema.Types.ObjectId,
-      ref: "products"
+      ref: "product"
     },
   ],
   role: {
