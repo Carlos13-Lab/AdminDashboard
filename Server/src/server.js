@@ -1,5 +1,5 @@
 require('dotenv').config();
-const {auth, service, product, profile, user, sale} = require('./routes/routes')
+const {auth, StreamingService , product, profile, user, sale} = require('./routes/routes')
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -25,7 +25,7 @@ class Server {
     });
 
     this.server.use('/api/demo/auth', auth);
-    this.server.use('/api/demo/service', service);
+    this.server.use('/api/demo/service', StreamingService);
     this.server.use('/api/demo/product', product);
     this.server.use('/api/demo/profile', profile);
     this.server.use('/api/demo/user', user);

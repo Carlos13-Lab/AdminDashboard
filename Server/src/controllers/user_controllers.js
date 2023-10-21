@@ -133,36 +133,57 @@ const userGetById = async (req, res) => {
     }
 };
 
+// Function to generate a random email
+function generateRandomEmail() {
+    const randomString = Math.random().toString(36).substring(2, 15);
+    return `${randomString}@example.com`;
+}
 
-
-const addIdProductClient = async (req, res) => {
-    const { id } = req.params;
-    const { pid } = req.body;
-
-    // Verificar si id y pid están presentes
-    if (!id || !pid) {
-        return res.status(400).json({ message: "Invalid request" });
-    }
-
+const UserNewClient = async (req, res) => {
     try {
-        const user = await User.findById(id);
+        const { userName, phone_Number, active, product } = req.body;
+        const randomEmail = generateRandomEmail();
 
-        // Verificar si el pid ya existe en el array product del usuario
-        if (user.product.includes(pid)) {
-            return res.status(400).json({ message: "Product already exists for the user" });
+        const user = new User({
+            userName,
+            email: randomEmail,
+            role: 'client',
+            phone_Number,
+            active,
+            product: []
+        });
+
+        if (product && user.role === 'client') {
+            const productIds = [...new Set(product)];
+
+            for (let productId of productIds) {
+                try {
+                    if (mongoose.Types.ObjectId.isValid(productId)) {
+                        const productObj = await Product.findById(productId);
+                        if (productObj) {                
+                            user.product.push(productId);
+                        }
+                    }
+                } catch (error) {
+                    console.error(`Error finding product: ${error}`);
+                }
+            }
         }
 
-        user.product.push(pid);
         await user.save();
-        return res.status(201).json({
-            message: "User Add success",
-            data: user,
+
+        return res.status(200).json({
+            message: 'User created',
+            data: { user }
         });
     } catch (error) {
-        console.error(`Error in User: ${error}`);
-        return res.status(500).json({ message: "Error saving user" });
+        console.error(`Error in userPost: ${error}`);
+        return res.status(500).json({
+            error: 'Error creating a user'
+        });
     }
 };
+
 
 const userDelete = async (req, res) => {
     const { id } = req.params;
@@ -236,6 +257,6 @@ module.exports = {
     userGet,
     userGetById,
     UserNew,
-    addIdProductClient,
-    userDelete
+    userDelete,
+    UserNewClient
 }
