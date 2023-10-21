@@ -1,5 +1,5 @@
 const Router = require('express');
-const StreamingServiceController = require('../controllers/streaming-service.controllers');
+const StreamingServiceController = require('../controllers/streaming-service.controller');
 // const { validateJWT } = require('../middlewares/validateJWT');
 
 

@@ -14,11 +14,10 @@ const productSchema = new Schema({
     type: Boolean,
     default: true,
   },
-  service: 
-    {
-      type: Schema.Types.ObjectId,
-      ref: "streaming_service",
-    }
+  streaming_service: {
+    type: Schema.Types.ObjectId,
+    ref: "streaming_service",
+  },
 });
 productSchema.methods.toJSON = function idSetter() {
   const { _id, ...product } = this.toObject();

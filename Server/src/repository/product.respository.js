@@ -14,7 +14,7 @@ class ProductRepository {
       "password",
       "status",
     ]).populate({
-      path: "service",
+      path: "streaming_service",
       select: "name",
     });
     return product;
@@ -59,7 +59,7 @@ class ProductRepository {
 
   async unLinkStreamingService(streamingServiceId) {
     const updateResult = await Product.updateMany(    
-      { service: streamingServiceId },
+      { streaming_service: streamingServiceId.id },
       {
         $unset: { Info: 1 },
         $set: { status: false },
