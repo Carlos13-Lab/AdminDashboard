@@ -1,7 +1,7 @@
 module.exports = {
-    user:require("./user"),
+    User:require("./user.model"),
     StreamingServiceModel:require("./streaming-service.model"),
-    profiles:require("./profiles"),
+    Profile:require("./profile.model"),
     Product:require("./product.model"),
     sale:require("./sale")
 }  

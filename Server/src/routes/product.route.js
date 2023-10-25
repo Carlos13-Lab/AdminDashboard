@@ -8,7 +8,7 @@ const route = Router();
 
 // route.use(validateJWT)
 route
-  .post("/createproduct/:id", controller.create)
+  .post("/createproduct", controller.create)
   .get("/", controller.getProduct)
   .get("/:id", controller.getById)
   .put("/:id", controller.update)

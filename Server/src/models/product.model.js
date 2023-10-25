@@ -18,6 +18,10 @@ const productSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "streaming_service",
   },
+  profiles: [{
+    type: Schema.Types.ObjectId,
+    ref: "profile"
+  }]
 });
 productSchema.methods.toJSON = function idSetter() {
   const { _id, ...product } = this.toObject();

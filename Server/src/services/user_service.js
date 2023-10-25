@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const User = require("../models");
 // const { encryptPassword } = require("../helpers/crypto");
 
 const findById = async (id) => {

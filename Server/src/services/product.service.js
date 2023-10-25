@@ -7,7 +7,7 @@ class ProductService {
     this.create = this.create.bind(this);
     this.update = this.update.bind(this);
     this.getPage = this.getPage.bind(this);
-    this.delete = this.delete.bind(this)
+    this.delete = this.delete.bind(this);
   }
 
   async findById(id) {
@@ -53,10 +53,10 @@ class ProductService {
   }
 
   async delete(id) {
-    try{ 
-      return this.repository.delete(id)
-    } catch(error) {
-
+    try {
+      return this.repository.delete(id);
+    } catch (error) {
+      throw error;
     }
   }
 }

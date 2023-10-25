@@ -1,6 +1,6 @@
 const { Product } = require("../models");
 const Sale = require("../models/sale");
-const User = require("../models/user");
+const User = require("../models");
 
 const findById = async (id) => {
   const sale = await Sale.findById(id, ["status", "saleDate"])

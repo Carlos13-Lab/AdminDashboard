@@ -3,14 +3,14 @@ const { findById, findByIdSeller } = require('../services/user_service.js')
 const mongoose = require('mongoose');
 const bcryptjs = require('bcryptjs')
 
-const User = require('../models/user.js');
+const User = require('../models');
 const Product = require('../models');
 const Sale = require('../models/sale.js')
 
 
 const UserNew = async (req, res) => {
     try {
-        const { userName, email, password, role, phone_Number, active, product } = req.body;
+        const { userName, email, password, role, phone_Number, active  } = req.body;
 
         const user = new User({
             userName,
@@ -19,25 +19,7 @@ const UserNew = async (req, res) => {
             role,
             phone_Number,
             active,
-            product: []
         });
-
-        if (product && user.role === 'client') {
-            const productIds = [...new Set(product)];
-
-            for (let productId of productIds) {
-                try {
-                    if (mongoose.Types.ObjectId.isValid(productId)) {
-                        const productObj = await Product.findById(productId);
-                        if (productObj) {                
-                            user.product.push(productId);
-                        }
-                    }
-                } catch (error) {
-                    console.error(`Error finding product: ${error}`);
-                }
-            }
-        }
 
         await user.save();
 

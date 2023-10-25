@@ -3,7 +3,7 @@ const {
   auth,
   StreamingService,
   Product,
-  profile,
+  Profile,
   user,
   sale,
 } = require("./routes/routes");
@@ -34,7 +34,7 @@ class Server {
     this.server.use("/api/demo/auth", auth);
     this.server.use("/api/demo/service", StreamingService);
     this.server.use("/api/demo/product", Product);
-    this.server.use("/api/demo/profile", profile);
+    this.server.use("/api/demo/profile", Profile);
     this.server.use("/api/demo/user", user);
     this.server.use("/api/demo/sale", sale);
   }

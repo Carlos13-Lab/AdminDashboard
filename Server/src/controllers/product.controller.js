@@ -1,25 +1,23 @@
 const { serverError, success, error } = require("../helpers/response.js");
-const { newProducts, findById } = require("../services/product.service.js");
 const Sale = require("../models/sale.js");
-const Profiles = require("../models/profiles.js");
+const Profiles = require("../models/profile.model.js");
 const { Product } = require("../models/index.js");
-const User = require("../models/user.js");
+const User = require("../models");
 const ProductService = require("../services/product.service.js");
 
 class ProductController {
   constructor() {
     this.service = new ProductService();
-    this.create = this.create.bind(this)
-    this.getProduct = this.getProduct.bind(this)
-    this.update = this.update.bind(this)
-    this.getById = this.getById.bind(this)
-    this.delete = this.delete.bind(this)
-    
+    this.create = this.create.bind(this);
+    this.getProduct = this.getProduct.bind(this);
+    this.update = this.update.bind(this);
+    this.getById = this.getById.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   async create(req, res) {
     try {
-      const {body } = req
+      const { body } = req;
       const productCreated = await this.service.create(body);
 
       return success({
@@ -138,8 +136,6 @@ class ProductController {
     }
   }
 }
-
-
 
 const productDelete = async (req, res) => {
   try {

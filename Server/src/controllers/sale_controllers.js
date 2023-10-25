@@ -1,7 +1,7 @@
 const { serverError, success, error } = require('../helpers/response.js');
 const { Product } = require("../models");
 const Sale = require('../models/sale.js');
-const User = require('../models/user.js');
+const User = require('../models');
 
 const { newSale, findById, findByIdandUpdate } = require('../services/sale_service.js')
 

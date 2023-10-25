@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const profiles_Schema = new Schema({
+const profileSchema = new Schema({
   name: { 
     type: String,
     required: true,
@@ -21,19 +21,19 @@ const profiles_Schema = new Schema({
     max: 5,
     required: true,
   },
-  product: [{
+  product: {
     type: Schema.Types.ObjectId,
     ref: 'product'
-  }],
+  },
 });
 
 
-profiles_Schema.methods.toJSON = function idSetter() {
+profileSchema.methods.toJSON = function idSetter() {
   const { _id, ...profiles } = this.toObject();
   profiles.id = _id;
   return profiles;
 };
 
-const Profiles = model("profiles", profiles_Schema);
+const Profiles = model("profile", profileSchema);
 
 module.exports = Profiles;

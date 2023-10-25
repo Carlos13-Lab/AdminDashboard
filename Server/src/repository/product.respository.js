@@ -6,6 +6,7 @@ class ProductRepository {
     this.findById = this.findById.bind(this);
     this.update = this.update.bind(this);
     this.delete = this.delete.bind(this);
+    this.findPaginated = this.findPaginated.bind(this)
   }
 
   async findById(id) {
@@ -16,7 +17,10 @@ class ProductRepository {
     ]).populate({
       path: "streaming_service",
       select: "name",
-    });
+    }).populate({
+      path: "profiles",
+      select: "name pin number ",
+    })
     return product;
   }
 
@@ -26,12 +30,13 @@ class ProductRepository {
   }
 
   async update(productDto) {
-    const { email, password, status } = productDto;
+    const { id, email, password, status, profiles } = productDto;
 
     const options = {
       email,
       password,
       status,
+      profiles
     };
 
     return await Product.findByIdAndUpdate(
