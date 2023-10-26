@@ -3,6 +3,6 @@ module.exports = {
     StreamingService:require('./streaming-service.route'),
     Product:require('./product.route'),
     Profile:require('./profile.route'),
-    user:require('./user-route'),
+    User:require('./user.route'),
     sale:require('./sale-route')
 }

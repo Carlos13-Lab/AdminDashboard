@@ -1,12 +1,6 @@
 const { serverError, success, error } = require("../helpers/response.js");
 const ProfileService = require("../services/profile.service.js");
 
-const {
-  newProfile,
-  findByIdProfile,
-  findByIdandUpdate,
-} = require("../services/profile.service.js");
-
 class ProfileController {
   constructor() {
     this.service = new ProfileService();
@@ -40,6 +34,7 @@ class ProfileController {
   async getById(req, res) {
     try {
       const { id } = req.params;
+
       const profile = await this.service.findById(id);
 
       if (!profile) {
@@ -56,6 +51,7 @@ class ProfileController {
         data: profile,
         status: 200,
       });
+
     } catch (err) {
       console.error(`Error in profileGetById:${err}`);
       return error(req, res, "Error getting profile");
@@ -74,11 +70,13 @@ class ProfileController {
         data: page,
         status: 200,
       });
+
     } catch (err) {
       console.error(`Error in profileGet:${err}`);
       return error(req, res, "Error getting list of profile");
     }
   }
+
   async update(req, res) {
     try {
       const { body } = req;
@@ -107,6 +105,7 @@ class ProfileController {
       });
     }
   }
+  
   async delete(req, res) {
     try {
       const { id } = req.params;

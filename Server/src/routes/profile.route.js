@@ -10,7 +10,7 @@ const route = Router();
 route.post('/createprofile/', controller.create)
      .get('/', controller.getProfile)
      .get('/:id', controller.getById)
-     .put('/:id', controller.update)
+     .put('/', controller.update)
      .delete('/:id', controller.delete)
 
 

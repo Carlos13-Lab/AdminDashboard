@@ -26,7 +26,7 @@ class ProfileRepository {
   }
 
   async update(profileDto) {
-    const { name, status, pin, number } = profileDto;
+    const {id, name, status, pin, number } = profileDto;
 
     const options = {
       name,

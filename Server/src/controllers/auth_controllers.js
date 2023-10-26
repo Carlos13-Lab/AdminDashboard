@@ -3,7 +3,7 @@ const bcryptjs = require('bcryptjs');
 const { generateJWT } = require("../middlewares/jwt.js");
 const User = require("../models");
 
-const { NewUser } = require("../services/user_service.js");
+// const { NewUser } = require("../services/user_service.js");
 
 const Register = async (req, res) => {
   let data = {};

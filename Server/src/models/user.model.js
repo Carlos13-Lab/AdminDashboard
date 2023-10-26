@@ -15,26 +15,25 @@ const user_Schema = new Schema({
   phone_Number: {
     type: Number,
     required: true,
-
   },
   active: {
     type: Boolean,
     default: true,
   },
   product:
-    {
+   [ {
       type: Schema.Types.ObjectId,
       ref: "product"
-    },
+    }],
   role: {
     type: String,
     required: true,
     enum: ["admin", "seller", "client"],
   },
-  sale: {
+  sale:[{
     type: Schema.Types.ObjectId,
     ref: 'sale'
-  }
+  }]
 });
 
 user_Schema.methods.toJSON = function idSetter() {
