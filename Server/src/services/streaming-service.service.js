@@ -7,7 +7,7 @@ class StreamingServiceService {
     this.productService = new ProductService();
     this.create = this.create.bind(this);
     this.delete = this.delete.bind(this);
-    this.getById = this.getById.bind(this);
+    this.findById = this.getById.bind(this);
     this.update = this.update.bind(this);
     this.getPage = this.getPage.bind(this);
   }

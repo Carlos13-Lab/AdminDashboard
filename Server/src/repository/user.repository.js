@@ -3,7 +3,6 @@ const { User } = require("../models");
 class UserRepository {
   constructor() {
     this.findById = this.findById.bind(this);
-    this.findSellerById = this.findSellerById.bind(this);
     this.create = this.create.bind(this);
     this.findPaginated = this.findPaginated.bind(this);
     this.delete = this.delete.bind(this);
@@ -18,32 +17,18 @@ class UserRepository {
         "phone_Number",
         "role",
         "active",
-      ]).populate({ path: "product", select: "email" });
-      return user;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async findSellerById(id) {
-    try {
-      const user = await User.findById(id, [
-        "userName",
-        "email",
-        "phone_Number",
-        "role",
-        "active",
-      ]).populate([
+      ]).populate({ path: "product", select: "email" })
+        .populate([
         {
           path: "sale",
           select: "saleDate",
           populate: [
             {
-              path: "clientId",
+              path: "client",
               select: "userName email role",
             },
             {
-              path: "Info",
+              path: "product",
               select: "email",
               populate: {
                 path: "streaming_service",
@@ -67,16 +52,21 @@ class UserRepository {
         "phone_Number",
         "role",
         "active",
+        "password"
       ]).populate({
         path: "sale",
         select: "saleDate",
         populate: [
           {
-            path: "clientId",
+            path: "client",
             select: "userName email role",
+            populate: {
+              path: "user",
+              select: "userName email role",
+            },
           },
           {
-            path: "Info",
+            path: "product",
             select: "email",
             populate: {
               path: "streaming_service",

@@ -3,5 +3,5 @@ module.exports = {
     StreamingServiceModel:require("./streaming-service.model"),
     Profile:require("./profile.model"),
     Product:require("./product.model"),
-    sale:require("./sale")
+    Sale:require("./sale.model")
 }  

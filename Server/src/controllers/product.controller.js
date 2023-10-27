@@ -1,5 +1,5 @@
 const { serverError, success, error } = require("../helpers/response.js");
-const Sale = require("../models/sale.js");
+const Sale = require("../models/sale.model.js");
 const Profiles = require("../models/profile.model.js");
 const { Product } = require("../models/index.js");
 const User = require("../models");

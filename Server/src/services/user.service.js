@@ -1,22 +1,19 @@
-
 const UserRepository = require("../repository/user.repository");
+
 class UserService {
   constructor() {
     this.repository = new UserRepository();
-    this.findById = this.find.bind(this);
+    this.find = this.find.bind(this);
     this.create = this.create.bind(this);
     this.update = this.update.bind(this);
-    this.getPage = this.getPage.bind(this)
-    this.delete = this.delete.bind(this)
+    this.getPage = this.getPage.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   async find(userDto) {
     try {
       if (userDto.email) {
         return await this.repository.findByEmail(userDto.email);
-      }
-      if (userDto.id && userDto.role == "seller") {
-        return await this.repository.findSellerById(userDto.id);
       }
       if (userDto.id) {
         return await this.repository.findById(userDto.id);
@@ -53,14 +50,13 @@ class UserService {
 
   async delete(id) {
     try {
-      const userDeleted = await this.repository.delete(id);
+      const userToDelete = await this.repository.delete(id);
 
-      if (!userDeleted) {
+      if (!userToDelete) {
         throw new Error("User not found");
       }
-      //TODO: Sale Delete
-      
 
+      return userToDelete;
     } catch (error) {
       throw error;
     }

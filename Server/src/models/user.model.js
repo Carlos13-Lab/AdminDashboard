@@ -1,7 +1,6 @@
 const { Schema, model } = require("mongoose");
 
 const user_Schema = new Schema({
-
   userName: {
     type: String,
     required: true,
@@ -20,20 +19,23 @@ const user_Schema = new Schema({
     type: Boolean,
     default: true,
   },
-  product:
-   [ {
+  product: [
+    {
       type: Schema.Types.ObjectId,
-      ref: "product"
-    }],
+      ref: "product",
+    },
+  ],
   role: {
     type: String,
     required: true,
     enum: ["admin", "seller", "client"],
   },
-  sale:[{
-    type: Schema.Types.ObjectId,
-    ref: 'sale'
-  }]
+  sale: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "sale",
+    },
+  ],
 });
 
 user_Schema.methods.toJSON = function idSetter() {
@@ -41,7 +43,6 @@ user_Schema.methods.toJSON = function idSetter() {
   user.id = _id;
   return user;
 };
-
 
 const User = model("user", user_Schema);
 
