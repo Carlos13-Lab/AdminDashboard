@@ -20,12 +20,25 @@ class Server {
 
     this.server.use(bodyParser.urlencoded({ extended: false }));
     this.server.use(bodyParser.json());
+    this.server.use((req, res, next) => {
+      res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+      res.header("Access-Control-Allow-Credentials", "true");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+      next();
+    });
     this.server.use(
       cors({
         exposedHeaders: "*",
         allowedHeaders: "*",
       })
     );
+    const corsOptions ={
+      origin:'http://localhost:3000', 
+      credentials:true,            //access-control-allow-credentials:true
+      optionSuccessStatus:200
+  }
+  app.use(cors(corsOptions));
 
     this.server.get("/", (req, res) => {
       res.status(200).json({ message: "Connect" });
