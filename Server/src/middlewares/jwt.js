@@ -6,7 +6,7 @@ const generateJWT = (input) =>
             ...input
         };
 
-        jwt.sign(payload, process.env.jwtsec ,{ expiresIn: '72h' }, (err, token) => {
+        jwt.sign(payload, process.env.jwt ,{ expiresIn: '72h' }, (err, token) => {
             if (err) {
                 reject(Error('no se pudo generar el token'));
             }

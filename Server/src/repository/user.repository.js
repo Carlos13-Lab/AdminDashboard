@@ -82,7 +82,7 @@ class UserRepository {
     }
   }
 
-  async findPaginated(from = 0, limit = 10) {
+  async findPaginated(from = 0, limit ) {
     try {
       const [total, user] = await Promise.all([
         User.countDocuments(),
@@ -111,7 +111,7 @@ class UserRepository {
   async create(userDto) {
     try {
       const userCreated = new User(userDto);
-      return userCreated;
+      return userCreated.save();
     } catch (error) {
       throw error;
     }

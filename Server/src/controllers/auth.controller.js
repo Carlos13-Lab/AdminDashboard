@@ -1,5 +1,5 @@
 const { serverError, success, error } = require("../helpers/response.js");
-const AuthService = require("../services/Auth.service.js");
+const AuthService = require("../services/auth.service.js");
 
 class AuthController {
   constructor() {
@@ -19,10 +19,11 @@ class AuthController {
         data: loginData, 
         status: 200,
       });
-    } catch (error) {
-      return serverError({
+    } catch (err) {
+      console.log(err)
+      return error({
         res,
-        message: "invalid not login",
+        message:`invalid not login for ${err}`,
         status: 400,
       });
     }

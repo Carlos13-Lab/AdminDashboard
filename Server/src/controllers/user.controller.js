@@ -52,7 +52,7 @@ class UserController {
         status: 201,
       });
     } catch (err) {
-      console.log(error(`Error in userPost: ${err}`));
+  
       return serverError({
         res,
         message: "Error creating a user",
