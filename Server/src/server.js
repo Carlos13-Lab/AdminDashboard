@@ -31,12 +31,12 @@ class Server {
       res.status(200).json({ message: "Connect" });
     });
 
-    this.server.use("/api/demo/auth", Auth);
-    this.server.use("/api/demo/service", StreamingService);
-    this.server.use("/api/demo/product", Product);
-    this.server.use("/api/demo/profile", Profile);
-    this.server.use("/api/demo/user", User);
-    this.server.use("/api/demo/sale", Sale);
+    this.server.use("/api/auth", Auth);
+    this.server.use("/api/service", StreamingService);
+    this.server.use("/api/product", Product);
+    this.server.use("/api/profile", Profile);
+    this.server.use("/api/user", User);
+    this.server.use("/api/sale", Sale);
   }
 
   start() {
