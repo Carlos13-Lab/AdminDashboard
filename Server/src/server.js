@@ -5,12 +5,12 @@ const {
   Product,
   Profile,
   User,
-  Sale
+  Sale,
 } = require("./routes/routes");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const { createProxyMiddleware } = require("http-proxy-middleware");
 const Database = require("./database/config");
 
 class Server {
@@ -28,13 +28,16 @@ class Server {
       })
     );
 
-this.server.use('/api', createProxyMiddleware({
-  target: 'https://admin-dashboard-36gcd6h6b-carlos13-lab.vercel.app',
-  changeOrigin: true,
-  headers: {
-    'Access-Control-Allow-Origin': 'http://localhost:3000'
-  }
-}));
+    this.server.use(
+      "/api",
+      createProxyMiddleware({
+        target: "https://admin-dashboard-36gcd6h6b-carlos13-lab.vercel.app",
+        changeOrigin: true,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+    );
     this.server.get("/", (req, res) => {
       res.status(200).json({ message: "Connect" });
     });
